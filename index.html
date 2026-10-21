@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NeuroPsicoLocos · Casos clínicos integradores · IN4</title>
+
+
+
+<style>
+:root {
+  --bg:#eef2f3; --surface:#fafbfb; --ink:#16232c; --muted:#4f5d68; --line:#cfd8dc;
+  --blue:#23637f; --amber:#9a5216; --slate:#4b5866;
+  --c0:#dfe5e8; --c1:#8fb7ca; --c2:#23637f; --tagbg:#e4ecef;
+  --serif:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans:"IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#121a20; --surface:#1a242b; --ink:#e3e9ec; --muted:#a6b4bd; --line:#2e3d46;
+    --blue:#83bfdb; --amber:#e6a46c; --slate:#a9b8c3;
+    --c0:#26333b; --c1:#3f7690; --c2:#83bfdb; --tagbg:#22313a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#121a20; --surface:#1a242b; --ink:#e3e9ec; --muted:#a6b4bd; --line:#2e3d46;
+  --blue:#83bfdb; --amber:#e6a46c; --slate:#a9b8c3;
+  --c0:#26333b; --c1:#3f7690; --c2:#83bfdb; --tagbg:#22313a; color-scheme: dark;
+}
+*,*::before,*::after { box-sizing:border-box; }
+html { scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px); }
+body { margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:17px; line-height:1.55; }
+a { color:var(--blue); }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline:3px solid var(--amber); outline-offset:2px; border-radius:4px; }
+.wrap { max-width:1080px; margin:0 auto; padding:0 24px; }
+.top { padding:56px 0 32px; }
+.kicker { color:var(--muted); font-size:15px; margin:0 0 12px; }
+h1 { font-family:var(--serif); font-weight:600; font-size:clamp(34px,5vw,54px); line-height:1.08; margin:0 0 18px; max-width:18ch; letter-spacing:-0.01em; }
+.intro { font-family:var(--serif); font-size:20px; line-height:1.6; max-width:62ch; margin:0; }
+.atlas { margin:40px 0 8px; background:var(--surface); border:1px solid var(--line); border-radius:6px; overflow-x:auto; }
+.atlas table { border-collapse:collapse; width:100%; min-width:720px; }
+.atlas th, .atlas td { padding:12px 14px; border-bottom:1px solid var(--line); text-align:center; font-size:14px; }
+.atlas thead th { font-weight:500; color:var(--muted); vertical-align:bottom; }
+.atlas tbody th { text-align:left; font-weight:500; font-size:15px; }
+.atlas tbody tr:last-child th, .atlas tbody tr:last-child td { border-bottom:none; }
+.atlas a { text-decoration:none; color:var(--ink); }
+.atlas a:hover { color:var(--blue); text-decoration:underline; }
+.cell { display:inline-block; width:28px; height:18px; border-radius:3px; background:var(--c0); vertical-align:middle; }
+.cell.v1 { background:var(--c1); } .cell.v2 { background:var(--c2); }
+.legend { display:flex; flex-wrap:wrap; gap:20px; font-size:14px; color:var(--muted); margin:12px 0 0; }
+.legend span { display:inline-flex; align-items:center; gap:8px; }
+.how { display:grid; grid-template-columns:1fr 1fr; gap:32px; margin:48px 0 0; padding:28px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.how h2 { font-family:var(--serif); font-size:24px; font-weight:600; margin:0 0 12px; }
+.how p, .how li { font-size:16px; }
+.how ol { margin:0; padding-left:22px; }
+.tag { display:inline-block; font-size:13px; font-weight:600; padding:2px 10px; border-radius:999px; background:var(--tagbg); white-space:nowrap; }
+.tH { color:var(--blue); } .tM { color:var(--slate); } .tHi { color:var(--amber); }
+.bar { position:sticky; top:env(safe-area-inset-top,0px); z-index:5; background:var(--bg); border-bottom:1px solid var(--line); margin-top:40px; }
+body::before { content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:10; background:var(--bg); }
+.bar .wrap { display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding-top:12px; padding-bottom:12px; }
+.bar .lbl { font-size:14px; color:var(--muted); margin-right:4px; }
+.chip { font:inherit; font-size:14px; border:1px solid var(--line); background:var(--surface); color:var(--ink); padding:6px 14px; border-radius:999px; cursor:pointer; }
+.chip[aria-pressed="true"] { background:var(--ink); color:var(--bg); border-color:var(--ink); }
+.toggle { margin-left:auto; }
+.case { padding:56px 0 48px; border-bottom:1px solid var(--line); }
+.case[hidden] { display:none; }
+.case-head { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; gap:16px; }
+.case h2 { font-family:var(--serif); font-weight:600; font-size:clamp(26px,3.4vw,34px); line-height:1.15; margin:0; max-width:24ch; }
+.strip { display:inline-flex; gap:4px; padding-top:8px; }
+.sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+.ctx { font-family:var(--serif); font-size:19px; color:var(--muted); margin:14px 0 28px; max-width:64ch; }
+.pres { display:grid; grid-template-columns:1.6fr 1fr; gap:28px; margin-bottom:24px; }
+.pres section ul { font-family:var(--serif); font-size:18px; line-height:1.65; padding-left:20px; margin:0; }
+.pres section li + li { margin-top:8px; }
+.pres aside { background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:18px 20px; }
+.pres aside ul { padding-left:18px; margin:0; font-size:16px; }
+h3 { font-size:15px; font-weight:600; color:var(--muted); margin:0 0 10px; }
+h4 { font-size:15px; font-weight:600; margin:0 0 8px; }
+details { border-top:1px solid var(--line); }
+details:last-of-type { border-bottom:1px solid var(--line); }
+summary { cursor:pointer; list-style:none; padding:14px 0; font-weight:500; font-size:17px; display:flex; align-items:center; gap:14px; }
+summary::-webkit-details-marker { display:none; }
+summary::after { content:"+"; margin-left:auto; font-size:22px; color:var(--muted); line-height:1; }
+details[open] summary::after { content:"−"; }
+.n { font-family:var(--serif); color:var(--blue); font-size:20px; width:20px; }
+details > *:not(summary) { margin:0 0 20px 34px; }
+details ul, details ol { padding-left:20px; }
+.sislist { list-style:none; padding-left:0 !important; }
+.sislist li { margin-bottom:8px; }
+.sysname { display:inline-block; min-width:190px; font-weight:600; color:var(--blue); }
+.tw { overflow-x:auto; }
+.tw table { border-collapse:collapse; width:100%; min-width:560px; font-size:16px; }
+.tw th { text-align:left; font-weight:600; font-size:14px; color:var(--muted); padding:8px 12px 8px 0; border-bottom:1px solid var(--line); }
+.tw td { padding:10px 12px 10px 0; border-bottom:1px solid var(--line); vertical-align:top; }
+.two { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+blockquote { font-family:var(--serif); font-style:italic; font-size:19px; line-height:1.6; border-left:3px solid var(--blue); padding:4px 0 4px 20px; max-width:64ch; }
+.nocon { margin-top:28px; padding:18px 22px; border-left:4px solid var(--amber); background:var(--surface); border-radius:0 6px 6px 0; }
+.nocon h3 { color:var(--amber); }
+.nocon ul { margin:0; padding-left:20px; }
+.foot { display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-top:28px; font-size:15px; }
+.conlist, .refs { list-style:none; padding:0; margin:0; }
+.conlist li, .refs li { margin-bottom:6px; color:var(--muted); }
+.ses { display:inline-block; font-weight:600; color:var(--ink); width:34px; }
+.dl { display:flex; flex-wrap:wrap; align-items:center; gap:14px; margin:24px 0 0; }
+.dl[hidden] { display:none; }
+.dlbtn { font:inherit; font-weight:600; font-size:16px; background:var(--blue); color:var(--bg); border:none; border-radius:6px; padding:10px 20px; cursor:pointer; }
+.dlbtn:disabled { opacity:.6; cursor:default; }
+.dlnote { font-size:15px; color:var(--muted); }
+.biblio { padding:56px 0 72px; }
+.biblio h2 { font-family:var(--serif); font-size:28px; margin:0 0 10px; }
+.biblio ul { padding-left:20px; font-size:15px; }
+.biblio li { margin-bottom:8px; }
+.note { font-size:15px; color:var(--muted); max-width:70ch; }
+@media (max-width:760px) {
+  .how, .pres, .two, .foot { grid-template-columns:1fr; }
+  details > *:not(summary) { margin-left:0; }
+  .toggle { margin-left:0; }
+  .sysname { display:block; min-width:0; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior:auto !important; } }
+html { scroll-behavior:smooth; }
+/* Local study layer; original palette, serif headings and card layout retained. */
+.brand-name { font-family:var(--sans); color:var(--blue); font-weight:600; font-size:24px; letter-spacing:.02em; margin:0 0 18px; }
+.brand-footer { border-top:1px solid var(--line); padding-top:28px; padding-bottom:32px; color:var(--muted); font-size:14px; }
+.brand-footer strong { color:var(--blue); font-size:20px; }
+.brand-footer p { max-width:76ch; }
+.study-controls { margin-top:28px; padding-top:20px; border-top:1px solid var(--line); }
+.mode-buttons { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:18px; }
+.study-controls button,.guide button { font:inherit; border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:6px; padding:10px 14px; cursor:pointer; }
+.study-controls button[aria-pressed=true],.guide .next { background:var(--blue); color:var(--bg); }
+.study-controls label { display:block; font-weight:600; margin-bottom:6px; }
+.study-controls select { width:100%; max-width:100%; padding:10px; font:inherit; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:6px; }
+select:focus-visible,.guide input:focus-visible { outline:3px solid var(--amber); outline-offset:3px; }
+.guide { margin:24px 0; padding:24px; border:1px solid var(--line); border-radius:8px; background:var(--surface); }
+.guide h3 { color:var(--ink); font-size:21px; }
+.guide fieldset { border:0; padding:0; margin:16px 0; min-width:0; }
+.guide legend { font-weight:600; margin-bottom:12px; }
+.guide label { display:flex; align-items:flex-start; gap:10px; padding:12px; border:1px solid var(--line); border-radius:6px; margin-bottom:10px; cursor:pointer; }
+.guide input { flex-shrink:0; margin-top:6px; }
+.guide-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; }
+.guide button:disabled { opacity:.5; cursor:default; }
+.guide-feedback { border-left:4px solid var(--blue); padding:12px 16px; margin:14px 0; }
+.guide-feedback.needs-review { border-color:var(--amber); }
+.guide-solution { border-top:1px solid var(--line); padding-top:18px; margin-top:20px; }
+.guide-solution .solution-text { margin:0; }
+.guide-progress,.case-number { color:var(--muted); font-size:15px; }
+.safety { border:2px solid var(--amber); border-radius:6px; padding:14px 18px; margin:20px 0; font-weight:500; }
+.safety p { margin:0; }
+.video-resource { background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:18px; margin-top:24px; }
+.video-resource h3 { color:var(--ink); }
+.video-resource p { font-size:15px; }
+.pres-new { max-width:76ch; }
+.bar .note { margin:0; font-size:13px; width:100%; }
+.case-analysis.reading-hidden { display:none; }
+body[data-mode=guided] .toggle { display:none; }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+.print-heading { display:none; }
+[hidden] { display:none !important; }
+@media(max-width:600px) { .wrap { padding-left:16px; padding-right:16px; } .guide { padding:16px; } .guide-actions button { flex:1 1 140px; } .mode-buttons button { flex:1 1 180px; } .case { padding-top:30px; } .bar { position:static; } .tw table { min-width:460px; } }
+@media print {
+  :root,:root[data-theme=dark] { --bg:#fff; --surface:#fff; --ink:#000; --muted:#333; --line:#aaa; --blue:#174e64; --amber:#6b3900; }
+  html { scroll-behavior:auto; } body { font-size:11pt; background:white; color:black; }
+  .wrap { max-width:none; padding:0; } .top { padding:0; } h1 { font-size:28pt; }
+  .study-controls,.bar,.guide,body::before { display:none !important; }
+  .case,.case[hidden],.case-analysis,.case-analysis.reading-hidden { display:block !important; }
+  .case { break-before:page; padding:10px 0; } .case h2 { font-size:22pt; }
+  .case details { break-inside:auto; } summary { break-after:avoid; }
+  .safety,.video-resource,.nocon,blockquote { break-inside:avoid; }
+  .pres,.two,.foot,.how { display:block; } .pres aside,.two>div,.foot>div { margin-top:12px; }
+  .atlas table,.tw table { min-width:0; width:100%; font-size:9pt; } .atlas th,.atlas td { padding:5px; }
+  .atlas { overflow:visible; } .tw { overflow:visible; } a { overflow-wrap:anywhere; }
+  .video-resource a::after { content:' (' attr(href) ')'; font-size:9pt; }
+  .biblio { padding:20px 0; } .print-heading { display:block; }
+}
+
+</style>
+<meta name="description" content="NeuroPsicoLocos: diez casos docentes de Neuropsiquiatría IN4, con decisiones guiadas, análisis y fuentes para consulta.">
+</head>
+<body>
+<header class="wrap top">
+  <p class="brand-name">NeuroPsicoLocos</p><p class="kicker">Diplomado en Neurobiología (IN4), módulo de Neuropsiquiatría</p>
+  <h1>Casos clínicos integradores</h1>
+  <p class="intro">Diez casos que recorren las cuatro sesiones del módulo: sistemas funcionales, síndromes, juicio clínico y formulación. Elige resolver un caso con decisiones y explicaciones, o leer el análisis completo. Las alertas de seguridad están visibles desde el inicio.</p>
+  
+  <div class="atlas" role="region" aria-label="Mapa de sistemas implicados en cada caso" tabindex="0">
+    <table>
+      <thead><tr><th scope="col" style="text-align:left">Caso</th><th scope="col">Emocional</th><th scope="col">Recompensa</th><th scope="col">Estrés</th><th scope="col">Cognitivo</th><th scope="col">Percepción y pensamiento</th></tr></thead>
+      <tbody><tr><th scope="row"><a href="#tce">Irritabilidad y consumo después de un traumatismo craneoencefálico</a></th><td><span class="cell v2" aria-label="Emocional: principal"></span></td><td><span class="cell v1" aria-label="Recompensa: secundario"></span></td><td><span class="cell v1" aria-label="Estrés: secundario"></span></td><td><span class="cell v2" aria-label="Cognitivo: principal"></span></td><td><span class="cell v0" aria-label="Percepción y pensamiento: no destacado"></span></td></tr><tr><th scope="row"><a href="#parkinson">Apuestas y compras en la enfermedad de Parkinson</a></th><td><span class="cell v1" aria-label="Emocional: secundario"></span></td><td><span class="cell v2" aria-label="Recompensa: principal"></span></td><td><span class="cell v1" aria-label="Estrés: secundario"></span></td><td><span class="cell v1" aria-label="Cognitivo: secundario"></span></td><td><span class="cell v1" aria-label="Percepción y pensamiento: secundario"></span></td></tr><tr><th scope="row"><a href="#adolescente">Retraimiento y experiencias inusuales en la adolescencia</a></th><td><span class="cell v2" aria-label="Emocional: principal"></span></td><td><span class="cell v1" aria-label="Recompensa: secundario"></span></td><td><span class="cell v2" aria-label="Estrés: principal"></span></td><td><span class="cell v1" aria-label="Cognitivo: secundario"></span></td><td><span class="cell v1" aria-label="Percepción y pensamiento: secundario"></span></td></tr><tr><th scope="row"><a href="#posparto">Insomnio extremo y confusión después del parto</a></th><td><span class="cell v2" aria-label="Emocional: principal"></span></td><td><span class="cell v0" aria-label="Recompensa: no destacado"></span></td><td><span class="cell v1" aria-label="Estrés: secundario"></span></td><td><span class="cell v2" aria-label="Cognitivo: principal"></span></td><td><span class="cell v2" aria-label="Percepción y pensamiento: principal"></span></td></tr><tr><th scope="row"><a href="#delirium">Agitación nocturna después de una cirugía</a></th><td><span class="cell v1" aria-label="Emocional: secundario"></span></td><td><span class="cell v0" aria-label="Recompensa: no destacado"></span></td><td><span class="cell v1" aria-label="Estrés: secundario"></span></td><td><span class="cell v2" aria-label="Cognitivo: principal"></span></td><td><span class="cell v2" aria-label="Percepción y pensamiento: principal"></span></td></tr><tr><th scope="row"><a href="#funcional">Episodios convulsivos con registro normal</a></th><td><span class="cell v2" aria-label="Emocional: principal"></span></td><td><span class="cell v0" aria-label="Recompensa: no destacado"></span></td><td><span class="cell v2" aria-label="Estrés: principal"></span></td><td><span class="cell v1" aria-label="Cognitivo: secundario"></span></td><td><span class="cell v0" aria-label="Percepción y pensamiento: no destacado"></span></td></tr><tr><th scope="row"><a href="#catatonia">Está despierta, pero casi no habla ni se mueve</a></th><td>Principal</td><td>No destacado</td><td>No destacado</td><td>Principal</td><td>No destacado</td></tr><tr><th scope="row"><a href="#encefalitis">Cambios de conducta que progresan hacia un cuadro neurológico</a></th><td>No destacado</td><td>No destacado</td><td>No destacado</td><td>Principal</td><td>Principal</td></tr><tr><th scope="row"><a href="#frontotemporal">Cambió su comportamiento, pero todavía recuerda sus citas</a></th><td>Principal</td><td>Principal</td><td>No destacado</td><td>Principal</td><td>No destacado</td></tr><tr><th scope="row"><a href="#afasia">Habla con fluidez, pero dejó de comprender de forma súbita</a></th><td>No destacado</td><td>No destacado</td><td>No destacado</td><td>Principal</td><td>No destacado</td></tr></tbody>
+    </table>
+  </div>
+  <p class="note">El mapa es una organización docente, no una medición. En los nuevos casos se describen además lenguaje, psicomotricidad y signos neurológicos/autonómicos; «no destacado» no significa ausencia clínica.</p><div class="legend"><span><span class="cell v2"></span>Sistema principal</span><span><span class="cell v1"></span>Sistema secundario</span><span><span class="cell v0"></span>No destacado en el caso</span></div>
+  <div class="how">
+    <div>
+      <h2>Cómo leer los casos</h2>
+      <p>Son viñetas compuestas e ilustrativas: no corresponden a personas reales. Separa siempre los datos de la viñeta, la interpretación individual y el apoyo publicado. Ninguna etiqueta sustituye una evaluación clínica.</p>
+      <p><strong>Dato:</strong> lo descrito en la viñeta. <strong>Interpretación:</strong> explicación provisional. <strong>Evidencia:</strong> apoyo publicado, que no confirma por sí mismo un diagnóstico individual. Las etiquetas de modelo e hipótesis expresan niveles de explicación.</p>
+      <p class="note">El mapa de sistemas resume el énfasis de cada caso; no es una medida.</p>
+    </div>
+    <div>
+      <h2>Secuencia de análisis</h2>
+      <ol>
+        <li>Síntomas y dominios afectados</li>
+        <li>Organización por sistemas funcionales</li>
+        <li>Hipótesis, separando datos de inferencias</li>
+        <li>Alternativas e información faltante</li>
+        <li>Prioridades clínicas y criterios de referencia</li>
+        <li>Comunicación clara, prudente y no estigmatizante</li>
+      </ol>
+    </div>
+  </div>
+</header>
+<nav class="study-controls wrap" aria-label="Modos de estudio"><div class="mode-buttons"><button type="button" id="guided-mode" aria-pressed="true">Resolver paso a paso</button><button type="button" id="reading-mode" aria-pressed="false">Leer análisis completo</button><button type="button" id="print-all">Imprimir los 10 casos</button></div><label for="case-select">Elegir caso</label><select id="case-select"><option value="tce">1. Irritabilidad y consumo después de un traumatismo craneoencefálico</option><option value="parkinson">2. Apuestas y compras en la enfermedad de Parkinson</option><option value="adolescente">3. Retraimiento y experiencias inusuales en la adolescencia</option><option value="posparto">4. Insomnio extremo y confusión después del parto</option><option value="delirium">5. Agitación nocturna después de una cirugía</option><option value="funcional">6. Episodios convulsivos con registro normal</option><option value="catatonia">7. Está despierta, pero casi no habla ni se mueve</option><option value="encefalitis">8. Cambios de conducta que progresan hacia un cuadro neurológico</option><option value="frontotemporal">9. Cambió su comportamiento, pero todavía recuerda sus citas</option><option value="afasia">10. Habla con fluidez, pero dejó de comprender de forma súbita</option></select><p id="study-status" role="status" aria-live="polite"></p><p class="note">Tu avance se conserva mientras esta pestaña permanezca abierta. Al recargar se reinicia. Sin envío de respuestas ni solicitudes externas.</p></nav><nav class="bar" aria-label="Filtrar casos por sistema principal">
+  <div class="wrap">
+    <span class="lbl">Sistema principal (selector):</span>
+    <button class="chip" data-f="all" aria-pressed="true">Todos</button>
+    <button class="chip" data-f="emo" aria-pressed="false">Emocional</button>
+    <button class="chip" data-f="rec" aria-pressed="false">Recompensa</button>
+    <button class="chip" data-f="est" aria-pressed="false">Estrés</button>
+    <button class="chip" data-f="cog" aria-pressed="false">Cognitivo</button>
+    <button class="chip" data-f="per" aria-pressed="false">Percepción y pensamiento</button>
+    <button class="chip toggle" id="toggle" type="button" aria-pressed="false">Abrir todos los análisis</button><p class="note" id="filter-status" role="status"></p>
+  </div>
+</nav>
+<main class="wrap" id="case-content">
+
+<article class="case" id="tce" data-sys="emo cog">
+  <header class="case-head">
+    <h2>Irritabilidad y consumo después de un traumatismo craneoencefálico</h2>
+    <span class="strip" aria-label="Sistemas implicados"><span class="cell v2" title="Emocional: principal"><span class="sr">Emocional: principal</span></span><span class="cell v1" title="Recompensa: secundario"><span class="sr">Recompensa: secundario</span></span><span class="cell v1" title="Estrés: secundario"><span class="sr">Estrés: secundario</span></span><span class="cell v2" title="Cognitivo: principal"><span class="sr">Cognitivo: principal</span></span><span class="cell v0" title="Percepción y pensamiento: no destacado"><span class="sr">Percepción y pensamiento: no destacado</span></span></span>
+  </header><p class="case-number">Caso 1 de 10 · Viñeta ficticia</p>
+  <p class="ctx">Hombre de 34 años, repartidor en motocicleta. Hace 14 meses sufrió un traumatismo craneoencefálico moderado con contusión frontal.</p>
+  <div class="pres">
+    <section><h3>Presentación</h3><ul><li>Su pareja refiere que «ya no es el mismo»: tiene explosiones de enojo por motivos menores, de las que luego se arrepiente.</li><li>Gasta de forma impulsiva y ha aumentado el consumo de alcohol los fines de semana.</li><li>Perdió su empleo por discusiones con clientes.</li><li>Él reconoce dolor de cabeza, mal sueño y olvidos, pero cree que el problema es que «la gente lo provoca».</li></ul></section>
+    <aside><h3>Evaluación</h3><ul><li>Cribado cognitivo en el límite bajo.</li><li>Lentitud de procesamiento.</li><li>Errores en tareas de inhibición y flexibilidad.</li><li>El informe de alta describe una contusión orbitofrontal.</li><li>Sin síntomas psicóticos.</li></ul></aside>
+  </div>
+  <div class="case-analysis"><details><summary><span class="n">1</span>Síntomas y dominios</summary><ul><li>Regulación emocional: irritabilidad y explosiones de enojo.</li><li>Control cognitivo: inhibición y flexibilidad; velocidad de procesamiento.</li><li>Recompensa: gasto impulsivo y consumo de alcohol.</li><li>Sueño y dolor.</li><li>Conciencia de los cambios: atribución externa.</li><li>Funcionamiento laboral y de pareja.</li></ul></details>
+  <details><summary><span class="n">2</span>Sistemas implicados</summary><ul class="sislist"><li><span class="sysname">Cognitivo</span>Fallo de control compatible con la lesión orbitofrontal y, posiblemente, con daño axonal difuso.</li><li><span class="sysname">Emocional</span>Control contextual deficiente: la respuesta no se ajusta a la importancia del estímulo.</li><li><span class="sysname">Recompensa</span>Preferencia por lo inmediato y consumo de alcohol, que a su vez empeora el control.</li><li><span class="sysname">Estrés</span>Pérdida del empleo, conflicto de pareja, dolor y mal sueño mantienen la activación.</li></ul></details>
+  <details><summary><span class="n">3</span>Hipótesis: datos e inferencias</summary>
+    <div class="tw"><table><thead><tr><th>Dato</th><th>Interpretación clínica provisional</th><th>Tipo de apoyo</th></tr></thead><tbody><tr><td>Explosiones de enojo con arrepentimiento posterior</td><td>Fallo del control inhibitorio sobre la respuesta emocional</td><td><span class="tag tM">Modelo</span></td></tr><tr><td>Lentitud y olvidos</td><td>Daño axonal difuso además de la contusión focal</td><td><span class="tag tHi">Hipótesis</span></td></tr><tr><td>Más consumo de alcohol</td><td>Impulsividad y alivio del malestar; el alcohol empeora el control tras la lesión</td><td><span class="tag tHi">Hipótesis</span></td></tr><tr><td>«La gente me provoca»</td><td>Conciencia reducida de los cambios, por la lesión o como protección de la autoestima</td><td><span class="tag tHi">Hipótesis</span></td></tr></tbody></table></div></details>
+  <details><summary><span class="n">4</span>Alternativas e información faltante</summary>
+    <div class="two"><div><h4>Explicaciones alternativas o concurrentes</h4><ul><li>Episodio depresivo</li><li>Estrés postraumático por el accidente</li><li>Trastorno por consumo de alcohol independiente de la lesión</li><li>Rasgos de personalidad previos</li><li>Efectos de analgésicos u otros fármacos</li><li>Trastorno del sueño después del traumatismo</li></ul></div><div><h4>Información que falta</h4><ul><li>Funcionamiento antes del accidente, según un informante</li><li>Patrón detallado de consumo</li><li>Síntomas postraumáticos</li><li>Riesgo de violencia hacia la pareja y hacia sí mismo</li><li>Dolor y medicación actual</li></ul></div></div></details>
+  <details><summary><span class="n">5</span>Prioridades clínicas</summary><ol><li>Evaluar la seguridad en la convivencia y ofrecer apoyo a la pareja.</li><li>Evaluar el consumo de alcohol con instrumentos validados.</li><li>Referir a neuropsiquiatría o rehabilitación neuropsicológica, según disponibilidad.</li><li>Abordar el sueño y el dolor.</li><li>Orientación para el retorno laboral.</li></ol></details>
+  <details><summary><span class="n">6</span>Cómo comunicarlo</summary><blockquote>«Después de un golpe en la cabeza como el que tuvo, es frecuente que cueste más frenar el enojo o cambiar de plan; eso tiene relación con áreas del cerebro que ayudan a regular las emociones. No es una excusa ni un destino: hay estrategias y apoyos que mejoran el control, y el alcohol y el mal sueño lo empeoran. Queremos evaluarlo con usted y, si está de acuerdo, con su pareja.»</blockquote></details></div>
+  <div class="nocon"><h3>Lo que el caso no permite concluir</h3><ul><li>Que todos los cambios se deban a la lesión sin conocer cómo era antes del accidente.</li><li>Que la lesión elimine la responsabilidad o la posibilidad de cambio.</li><li>Un pronóstico individual a partir de la imagen.</li></ul></div>
+  <div class="foot">
+    <div><h4>Conexión con las sesiones</h4><ul class="conlist"><li><span class="ses">S1</span>Sistemas distribuidos y diásquisis: una lesión focal con efectos en redes.</li><li><span class="ses">S2</span>Funciones ejecutivas y regulación emocional.</li><li><span class="ses">S3</span>Insight, validez ecológica y funcionamiento cotidiano.</li><li><span class="ses">S4</span>Recompensa, control y estrés como circuito de mantenimiento.</li></ul></div>
+    <div><h4>Referencias del caso</h4><ul class="refs"><li>Cummings (1993), sobre circuitos frontal-subcorticales.</li><li>Las secuelas neuropsiquiátricas del traumatismo craneoencefálico se describen en los manuales de neuropsiquiatría; no se incluye aquí una referencia específica verificada.</li></ul></div>
+  </div>
+</article>
+<article class="case" id="parkinson" data-sys="rec">
+  <header class="case-head">
+    <h2>Apuestas y compras en la enfermedad de Parkinson</h2>
+    <span class="strip" aria-label="Sistemas implicados"><span class="cell v1" title="Emocional: secundario"><span class="sr">Emocional: secundario</span></span><span class="cell v2" title="Recompensa: principal"><span class="sr">Recompensa: principal</span></span><span class="cell v1" title="Estrés: secundario"><span class="sr">Estrés: secundario</span></span><span class="cell v1" title="Cognitivo: secundario"><span class="sr">Cognitivo: secundario</span></span><span class="cell v1" title="Percepción y pensamiento: secundario"><span class="sr">Percepción y pensamiento: secundario</span></span></span>
+  </header><p class="case-number">Caso 2 de 10 · Viñeta ficticia</p>
+  <p class="ctx">Mujer de 62 años, contadora jubilada, con enfermedad de Parkinson desde hace 4 años. Hace 9 meses se aumentó la dosis de un agonista dopaminérgico.</p>
+  <div class="pres">
+    <section><h3>Presentación</h3><ul><li>Su hijo descubre deudas por apuestas en línea y compras repetidas de objetos que no usa.</li><li>Ella lo había ocultado; se siente avergonzada y dice que «no puede dejar de pensar en ello».</li><li>Por las tardes, cuando disminuye el efecto de la medicación, tiene ansiedad intensa.</li><li>A veces ve «una persona» en un rincón, que desaparece al mirarla.</li></ul></section>
+    <aside><h3>Evaluación</h3><ul><li>Orientada; cognición global conservada.</li><li>Leve disfunción ejecutiva.</li><li>Ánimo ansioso, sin euforia.</li><li>Sin antecedentes de juego.</li></ul></aside>
+  </div>
+  <div class="case-analysis"><details><summary><span class="n">1</span>Síntomas y dominios</summary><ul><li>Recompensa y control de impulsos: apuestas y compras.</li><li>Ansiedad ligada a las fluctuaciones de la medicación.</li><li>Percepción: fenómeno visual breve.</li><li>Funcionamiento financiero y familiar.</li><li>Vergüenza y ocultamiento.</li></ul></details>
+  <details><summary><span class="n">2</span>Sistemas implicados</summary><ul class="sislist"><li><span class="sysname">Recompensa</span>Estimulación dopaminérgica del estriado ventral: mayor saliencia de incentivo y menor peso del riesgo.</li><li><span class="sysname">Cognitivo</span>Control y valoración del riesgo, con leve disfunción ejecutiva.</li><li><span class="sysname">Emocional</span>Ansiedad en los periodos de menor efecto de la medicación.</li><li><span class="sysname">Percepción y pensamiento</span>Fenómeno visual breve que requiere precisar su forma y contexto; no identifica por sí solo una demencia.</li></ul></details>
+  <details><summary><span class="n">3</span>Hipótesis: datos e inferencias</summary>
+    <div class="tw"><table><thead><tr><th>Dato</th><th>Interpretación clínica provisional</th><th>Tipo de apoyo</th></tr></thead><tbody><tr><td>Juego y compras que empiezan tras aumentar el agonista</td><td>Trastorno del control de impulsos asociado a agonistas dopaminérgicos (Weintraub et al., 2010)</td><td><span class="tag tH">Referencia general</span></td></tr><tr><td>Mismo dato</td><td>Mecanismo por sobreestimulación de vías mesolímbicas</td><td><span class="tag tHi">Hipótesis</span></td></tr><tr><td>Ansiedad cuando baja el efecto de la medicación</td><td>Fluctuación no motora</td><td><span class="tag tH">Referencia general</span></td></tr><tr><td>Presencia en el rincón</td><td>Alucinación menor; su valor pronóstico individual es incierto</td><td><span class="tag tH">Referencia general</span></td></tr></tbody></table></div></details>
+  <details><summary><span class="n">4</span>Alternativas e información faltante</summary>
+    <div class="two"><div><h4>Explicaciones alternativas o concurrentes</h4><ul><li>Episodio maníaco: no hay euforia ni menor necesidad de sueño</li><li>Deterioro cognitivo con desinhibición</li><li>Fraude o explotación económica por terceros</li><li>Efectos de otros fármacos</li></ul></div><div><h4>Información que falta</h4><ul><li>Cronología exacta respecto al cambio de dosis</li><li>Magnitud de las deudas</li><li>Otras conductas: hipersexualidad, atracones, actividades repetitivas sin propósito</li><li>Riesgo suicida asociado a deudas y vergüenza</li><li>Evaluación cognitiva detallada</li></ul></div></div></details>
+  <details><summary><span class="n">5</span>Prioridades clínicas</summary><ol><li>Comunicar el cuadro al neurólogo tratante para revisar el tratamiento.</li><li>No suspender el agonista de forma brusca: existe un síndrome de abstinencia de agonistas dopaminérgicos (Rabinak y Nirenberg, 2010).</li><li>Medidas de protección financiera, con su consentimiento.</li><li>Evaluar el riesgo suicida.</li><li>Apoyo a la familia.</li></ol></details>
+  <details><summary><span class="n">6</span>Cómo comunicarlo</summary><blockquote>«Algunos medicamentos que ayudan al movimiento en el Parkinson pueden aumentar mucho, en algunas personas, el impulso a apostar o a comprar. No es un defecto de carácter. Vamos a revisarlo con su neuróloga o neurólogo, sin suspender nada por su cuenta, y a buscar mientras tanto formas de proteger sus finanzas.»</blockquote></details></div>
+  <div class="nocon"><h3>Lo que el caso no permite concluir</h3><ul><li>Que el fármaco sea la única causa.</li><li>Que la conducta desaparezca automáticamente al ajustar la dosis.</li><li>Que las alucinaciones menores indiquen una demencia.</li></ul></div>
+  <div class="foot">
+    <div><h4>Conexión con las sesiones</h4><ul class="conlist"><li><span class="ses">S1</span>Del mecanismo a la expresión clínica: un fármaco actúa sobre un sistema.</li><li><span class="ses">S2</span>Ansiedad y percepción en condiciones neurológicas.</li><li><span class="ses">S3</span>Fármacos y curso temporal como modificadores.</li><li><span class="ses">S4</span>Recompensa: querer frente a gustar, y pérdida de control.</li></ul></div>
+    <div><h4>Referencias del caso</h4><ul class="refs"><li>Weintraub, D. et al. (2010). Archives of Neurology, 67(5), 589–595.</li><li>Rabinak, C. A. y Nirenberg, M. J. (2010). Archives of Neurology, 67(1), 58–63.</li><li>Berridge y Robinson (1998), sobre saliencia de incentivo.</li></ul></div>
+  </div>
+</article>
+<article class="case" id="adolescente" data-sys="emo est">
+  <header class="case-head">
+    <h2>Retraimiento y experiencias inusuales en la adolescencia</h2>
+    <span class="strip" aria-label="Sistemas implicados"><span class="cell v2" title="Emocional: principal"><span class="sr">Emocional: principal</span></span><span class="cell v1" title="Recompensa: secundario"><span class="sr">Recompensa: secundario</span></span><span class="cell v2" title="Estrés: principal"><span class="sr">Estrés: principal</span></span><span class="cell v1" title="Cognitivo: secundario"><span class="sr">Cognitivo: secundario</span></span><span class="cell v1" title="Percepción y pensamiento: secundario"><span class="sr">Percepción y pensamiento: secundario</span></span></span>
+  </header><p class="case-number">Caso 3 de 10 · Viñeta ficticia</p>
+  <p class="ctx">Joven de 17 años, estudiante de bachillerato, que ha sufrido acoso escolar durante el último año.</p>
+  <div class="pres">
+    <section><h3>Presentación</h3><ul><li>Su rendimiento escolar bajó y dejó el equipo de fútbol; pasa horas en su cuarto.</li><li>Desde hace 3 meses siente que en la calle la gente lo mira y comenta, aunque dice que «probablemente no es así».</li><li>A veces oye su nombre justo cuando se está quedando dormido.</li><li>Fuma cannabis varios días por semana con amigos. Una tía materna tiene diagnóstico de esquizofrenia.</li></ul></section>
+    <aside><h3>Evaluación</h3><ul><li>Ideas de referencia con duda conservada.</li><li>Ánimo bajo y ansiedad social.</li><li>Sin desorganización del pensamiento.</li><li>Examen neurológico normal.</li></ul></aside>
+  </div>
+  <div class="case-analysis"><details><summary><span class="n">1</span>Síntomas y dominios</summary><ul><li>Percepción: experiencias al quedarse dormido.</li><li>Interpretación: sensación de ser observado, con duda.</li><li>Ánimo y ansiedad social.</li><li>Motivación: retraimiento y abandono de actividades.</li><li>Funcionamiento escolar.</li><li>Consumo de cannabis.</li></ul></details>
+  <details><summary><span class="n">2</span>Sistemas implicados</summary><ul class="sislist"><li><span class="sysname">Estrés</span>Acoso sostenido en un periodo sensible del desarrollo.</li><li><span class="sysname">Emocional</span>Ánimo bajo, ansiedad social e hipervigilancia.</li><li><span class="sysname">Recompensa</span>Menor motivación y consumo de cannabis.</li><li><span class="sysname">Percepción y pensamiento</span>Atribución de significado a estímulos neutros, con juicio de realidad conservado.</li></ul></details>
+  <details><summary><span class="n">3</span>Hipótesis: datos e inferencias</summary>
+    <div class="tw"><table><thead><tr><th>Dato</th><th>Interpretación clínica provisional</th><th>Tipo de apoyo</th></tr></thead><tbody><tr><td>Oye su nombre al quedarse dormido</td><td>Experiencia hipnagógica, frecuente en población general</td><td><span class="tag tH">Referencia general</span></td></tr><tr><td>Siente que lo miran, pero lo duda</td><td>Interpretación atenuada sin creencia delirante</td><td><span class="tag tM">Modelo</span></td></tr><tr><td>Cuadro global</td><td>Puede corresponder a un estado de riesgo clínico de psicosis, que requiere evaluación especializada con instrumentos estructurados (Fusar-Poli et al., 2013)</td><td><span class="tag tHi">Hipótesis</span></td></tr><tr><td>Cannabis frecuente</td><td>Factor asociado a mayor riesgo de psicosis, en interacción con la vulnerabilidad</td><td><span class="tag tH">Referencia general</span></td></tr></tbody></table></div></details>
+  <details><summary><span class="n">4</span>Alternativas e información faltante</summary>
+    <div class="two"><div><h4>Explicaciones alternativas o concurrentes</h4><ul><li>Depresión con ansiedad social</li><li>Hipervigilancia comprensible por el acoso: algunas miradas pueden ser reales</li><li>Efectos del cannabis</li><li>Trastorno del neurodesarrollo previo</li></ul></div><div><h4>Información que falta</h4><ul><li>Funcionamiento antes del último año</li><li>Ideación suicida</li><li>Patrón de consumo de cannabis</li><li>Situación escolar actual</li><li>Red de apoyo</li></ul></div></div></details>
+  <details><summary><span class="n">5</span>Prioridades clínicas</summary><ol><li>Evaluar el riesgo suicida.</li><li>Evaluación especializada, en un servicio de intervención temprana si existe.</li><li>Abordar el acoso con la escuela y la familia.</li><li>Información sobre el cannabis sin culpabilizar.</li><li>Seguimiento cercano.</li></ol></details>
+  <details><summary><span class="n">6</span>Cómo comunicarlo</summary><blockquote>«Lo que describes, sentir que te miran o escuchar tu nombre cuando te estás durmiendo, les pasa a muchas personas, sobre todo en épocas de mucho estrés. Que tengas dudas nos aporta información, pero no elimina la necesidad de evaluar lo que te pasa y cómo está afectando tu vida. Aun así, queremos acompañarte de cerca, porque el estrés del acoso, el ánimo bajo y el cannabis pueden hacer que estas experiencias aumenten.»</blockquote></details></div>
+  <div class="nocon"><h3>Lo que el caso no permite concluir</h3><ul><li>Que vaya a desarrollar esquizofrenia: la mayoría de las personas en un estado de riesgo clínico no desarrolla psicosis en los años siguientes.</li><li>Que el cannabis sea «la causa».</li><li>Que su sensación de ser observado sea necesariamente infundada.</li></ul></div>
+  <div class="foot">
+    <div><h4>Conexión con las sesiones</h4><ul class="conlist"><li><span class="ses">S1</span>Niveles de explicación y lenguaje no estigmatizante.</li><li><span class="ses">S2</span>Continuo psicótico y alteraciones del ánimo.</li><li><span class="ses">S3</span>Experiencia, interpretación y creencia; edad de inicio.</li><li><span class="ses">S4</span>Estrés crónico y recompensa.</li></ul></div>
+    <div><h4>Referencias del caso</h4><ul class="refs"><li>Fusar-Poli, P. et al. (2013). JAMA Psychiatry, 70(1), 107–120.</li><li>van Os et al. (2009), sobre el continuo psicótico.</li><li>Di Forti et al. (2019), sobre cannabis e incidencia de psicosis.</li></ul></div>
+  </div>
+</article>
+<article class="case" id="posparto" data-sys="emo cog per">
+  <header class="case-head">
+    <h2>Insomnio extremo y confusión después del parto</h2>
+    <span class="strip" aria-label="Sistemas implicados"><span class="cell v2" title="Emocional: principal"><span class="sr">Emocional: principal</span></span><span class="cell v0" title="Recompensa: no destacado"><span class="sr">Recompensa: no destacado</span></span><span class="cell v1" title="Estrés: secundario"><span class="sr">Estrés: secundario</span></span><span class="cell v2" title="Cognitivo: principal"><span class="sr">Cognitivo: principal</span></span><span class="cell v2" title="Percepción y pensamiento: principal"><span class="sr">Percepción y pensamiento: principal</span></span></span>
+  </header><p class="case-number">Caso 4 de 10 · Viñeta ficticia</p>
+  <p class="ctx">Mujer de 31 años, 9 días después de su primer parto, sin complicaciones obstétricas.</p>
+  <div class="safety" role="note">Prioridad inmediata: evaluación médica y psiquiátrica, con seguridad de madre y bebé. No esperar a completar el recorrido.</div><div class="pres">
+    <section><h3>Presentación</h3><ul><li>Desde hace 4 días duerme una o dos horas y dice no necesitar más.</li><li>Habla rápido, cambia de tema y alterna euforia y llanto.</li><li>Ayer afirmó que el bebé «no es el suyo» y que una enfermera lo cambió.</li><li>Por momentos parece desorientada. A los 22 años tuvo un episodio depresivo; su madre tiene trastorno bipolar.</li></ul></section>
+    <aside><h3>Evaluación</h3><ul><li>Atención y orientación fluctuantes.</li><li>Temperatura y presión arterial pendientes de registrar.</li><li>Sin exploración neurológica completa todavía.</li></ul></aside>
+  </div>
+  <div class="case-analysis"><details><summary><span class="n">1</span>Síntomas y dominios</summary><ul><li>Sueño y activación.</li><li>Ánimo: euforia y llanto alternantes.</li><li>Pensamiento: desorganización y creencia de sustitución del bebé.</li><li>Atención y conciencia: desorientación fluctuante.</li></ul></details>
+  <details><summary><span class="n">2</span>Sistemas implicados</summary><ul class="sislist"><li><span class="sysname">Emocional</span>Inestabilidad afectiva intensa.</li><li><span class="sysname">Percepción y pensamiento</span>Desorganización y creencia delirante de sustitución.</li><li><span class="sysname">Cognitivo</span>Fluctuación de la atención y la orientación.</li><li><span class="sysname">Estrés</span>Privación de sueño y cambio hormonal brusco como posibles desencadenantes.</li></ul></details>
+  <details><summary><span class="n">3</span>Hipótesis: datos e inferencias</summary>
+    <div class="tw"><table><thead><tr><th>Dato</th><th>Interpretación clínica provisional</th><th>Tipo de apoyo</th></tr></thead><tbody><tr><td>Inicio en las dos primeras semanas tras el parto; insomnio, euforia, delirio</td><td>Psicosis posparto, con fuerte relación con el espectro bipolar (Bergink, Rasgon y Wisner, 2016)</td><td><span class="tag tH">Referencia general</span></td></tr><tr><td>Antecedente familiar de trastorno bipolar</td><td>Antecedente familiar relevante; no demuestra un mecanismo genético individual</td><td><span class="tag tH">Referencia general</span></td></tr><tr><td>Mismo cuadro</td><td>Desencadenantes hormonales, de sueño e inmunes</td><td><span class="tag tHi">Hipótesis</span></td></tr></tbody></table></div></details>
+  <details><summary><span class="n">4</span>Alternativas e información faltante</summary>
+    <div class="two"><div><h4>Explicaciones alternativas o concurrentes</h4><ul><li>Preeclampsia o eclampsia</li><li>Infección</li><li>Alteraciones tiroideas</li><li>Encefalitis autoinmune</li><li>Trombosis venosa cerebral</li><li>Efectos de fármacos</li><li>Delirium por otra causa médica</li></ul></div><div><h4>Información que falta</h4><ul><li>Signos vitales</li><li>Exploración neurológica</li><li>Estudios de laboratorio</li><li>Ideas de daño hacia sí misma o hacia el bebé</li></ul></div></div></details>
+  <details><summary><span class="n">5</span>Prioridades clínicas</summary><ol><li>Urgencia: evaluación médica y psiquiátrica inmediata.</li><li>Seguridad de la madre y del bebé: supervisión continua hasta completar la evaluación.</li><li>Con frecuencia se requiere hospitalización.</li><li>Apoyo a la pareja y a la familia.</li><li>Las decisiones de tratamiento consideran la lactancia y corresponden al equipo especializado.</li></ol></details>
+  <details><summary><span class="n">6</span>Cómo comunicarlo</summary><blockquote>«Lo que le está pasando es una condición médica que puede aparecer después del parto y que tiene tratamiento. No es culpa de ella ni de ustedes. Necesita atención hoy mismo, y mientras tanto es importante que no se quede sola con el bebé.»</blockquote></details></div>
+  <div class="nocon"><h3>Lo que el caso no permite concluir</h3><ul><li>Un diagnóstico definitivo de trastorno bipolar a partir de un solo episodio.</li><li>Que no haya una causa médica sin haber hecho los estudios.</li><li>Que se trate de una tristeza posparto leve.</li></ul></div>
+  <div class="foot">
+    <div><h4>Conexión con las sesiones</h4><ul class="conlist"><li><span class="ses">S1</span>Integración de niveles: hormonal, cerebral, psicológico y social.</li><li><span class="ses">S2</span>Ánimo y psicosis.</li><li><span class="ses">S3</span>Curso agudo y condiciones médicas que se deben descartar.</li><li><span class="ses">S4</span>Hormonas, priorización por riesgo y comunicación a la familia.</li></ul></div>
+    <div><h4>Referencias del caso</h4><ul class="refs"><li>Bergink, V., Rasgon, N. y Wisner, K. L. (2016). American Journal of Psychiatry, 173(12), 1179–1188.</li></ul></div>
+  </div>
+</article>
+<article class="case" id="delirium" data-sys="cog per">
+  <header class="case-head">
+    <h2>Agitación nocturna después de una cirugía</h2>
+    <span class="strip" aria-label="Sistemas implicados"><span class="cell v1" title="Emocional: secundario"><span class="sr">Emocional: secundario</span></span><span class="cell v0" title="Recompensa: no destacado"><span class="sr">Recompensa: no destacado</span></span><span class="cell v1" title="Estrés: secundario"><span class="sr">Estrés: secundario</span></span><span class="cell v2" title="Cognitivo: principal"><span class="sr">Cognitivo: principal</span></span><span class="cell v2" title="Percepción y pensamiento: principal"><span class="sr">Percepción y pensamiento: principal</span></span></span>
+  </header><p class="case-number">Caso 5 de 10 · Viñeta ficticia</p>
+  <p class="ctx">Hombre de 78 años, dos días después de una cirugía de cadera. Vivía solo y era independiente.</p>
+  <div class="safety" role="note">Cambio agudo y fluctuante: requiere evaluación clínica pronta, búsqueda de causas y atención a la seguridad.</div><div class="pres">
+    <section><h3>Presentación</h3><ul><li>Por la noche intenta quitarse el suero, dice ver insectos en la pared y cree estar «en el cuartel».</li><li>Por la mañana está más tranquilo pero somnoliento, y no recuerda la noche.</li><li>Su familia refiere que en el último año «se le olvidaban algunas cosas».</li><li>Recibe un opioide y le dieron un antihistamínico para dormir. Tiene retención urinaria.</li></ul></section>
+    <aside><h3>Evaluación</h3><ul><li>No puede decir los meses del año al revés.</li><li>Desorientación en tiempo y lugar.</li><li>Inversión del ciclo sueño-vigilia.</li></ul></aside>
+  </div>
+  <div class="case-analysis"><details><summary><span class="n">1</span>Síntomas y dominios</summary><ul><li>Atención y nivel de conciencia.</li><li>Percepción: alucinaciones visuales.</li><li>Pensamiento: desorientación.</li><li>Conducta: agitación nocturna.</li><li>Sueño.</li></ul></details>
+  <details><summary><span class="n">2</span>Sistemas implicados</summary><ul class="sislist"><li><span class="sysname">Cognitivo</span>Alteración aguda y fluctuante de la atención.</li><li><span class="sysname">Percepción y pensamiento</span>Alucinaciones visuales y desorientación.</li><li><span class="sysname">Estrés</span>Cirugía, dolor y entorno hospitalario como estresores.</li><li><span class="sysname">Emocional</span>Miedo y agitación asociados a las percepciones.</li></ul></details>
+  <details><summary><span class="n">3</span>Hipótesis: datos e inferencias</summary>
+    <div class="tw"><table><thead><tr><th>Dato</th><th>Interpretación clínica provisional</th><th>Tipo de apoyo</th></tr></thead><tbody><tr><td>Inicio agudo, atención fluctuante, alucinaciones visuales</td><td>Delirium multifactorial (Inouye, Westendorp y Saczynski, 2014)</td><td><span class="tag tH">Referencia general</span></td></tr><tr><td>Antihistamínico, opioide, retención urinaria</td><td>Factores precipitantes, incluida la carga anticolinérgica</td><td><span class="tag tH">Referencia general</span></td></tr><tr><td>Olvidos en el último año</td><td>Posible deterioro cognitivo previo como factor de vulnerabilidad</td><td><span class="tag tHi">Hipótesis</span></td></tr><tr><td>Mismo cuadro</td><td>Mecanismos colinérgicos e inflamatorios</td><td><span class="tag tHi">Hipótesis</span></td></tr></tbody></table></div></details>
+  <details><summary><span class="n">4</span>Alternativas e información faltante</summary>
+    <div class="two"><div><h4>Explicaciones alternativas o concurrentes</h4><ul><li>Abstinencia de alcohol o de benzodiacepinas</li><li>Infección</li><li>Hipoxemia</li><li>Ictus</li><li>Demencia con cuerpos de Lewy, aunque el inicio agudo orienta a delirium</li></ul></div><div><h4>Información que falta</h4><ul><li>Consumo previo de alcohol o de benzodiacepinas</li><li>Cognición previa, según un informante</li><li>Estudios de laboratorio</li><li>Control del dolor</li></ul></div></div></details>
+  <details><summary><span class="n">5</span>Prioridades clínicas</summary><ol><li>Identificar y corregir las causas.</li><li>Revisar los fármacos con el equipo, en especial los anticolinérgicos.</li><li>Medidas no farmacológicas: orientación, lentes y audífonos, sueño, presencia de la familia.</li><li>Prevención de caídas.</li><li>Evaluación cognitiva después del alta.</li></ol></details>
+  <details><summary><span class="n">6</span>Cómo comunicarlo</summary><blockquote>«Su padre tiene un estado de confusión llamado delirium, que es frecuente después de una cirugía en personas mayores. Suele deberse a varias causas a la vez, como medicamentos, dolor o infecciones, y mejora al tratarlas. Su compañía y los objetos conocidos ayudan. Después del alta conviene revisar su memoria, porque los olvidos previos merecen evaluarse.»</blockquote></details></div>
+  <div class="nocon"><h3>Lo que el caso no permite concluir</h3><ul><li>Que tenga demencia: los resultados cognitivos del episodio agudo no bastan para atribuir deterioro persistente a demencia; evaluar atención y cognición sí ayuda a identificar y seguir el delirium.</li><li>Que las alucinaciones indiquen una psicosis primaria.</li><li>Que el delirium se resuelva siempre sin secuelas.</li></ul></div>
+  <div class="foot">
+    <div><h4>Conexión con las sesiones</h4><ul class="conlist"><li><span class="ses">S1</span>Neuromodulación colinérgica y sistemas distribuidos.</li><li><span class="ses">S2</span>Atención y percepción.</li><li><span class="ses">S3</span>Curso temporal, fármacos y edad.</li><li><span class="ses">S4</span>Priorización y comunicación a la familia.</li></ul></div>
+    <div><h4>Referencias del caso</h4><ul class="refs"><li>Inouye, S. K., Westendorp, R. G. J. y Saczynski, J. S. (2014). The Lancet, 383(9920), 911–922.</li><li>Petersen y Posner (2012), sobre los sistemas de la atención.</li></ul></div>
+  </div>
+</article>
+<article class="case" id="funcional" data-sys="emo est">
+  <header class="case-head">
+    <h2>Episodios convulsivos con registro normal</h2>
+    <span class="strip" aria-label="Sistemas implicados"><span class="cell v2" title="Emocional: principal"><span class="sr">Emocional: principal</span></span><span class="cell v0" title="Recompensa: no destacado"><span class="sr">Recompensa: no destacado</span></span><span class="cell v2" title="Estrés: principal"><span class="sr">Estrés: principal</span></span><span class="cell v1" title="Cognitivo: secundario"><span class="sr">Cognitivo: secundario</span></span><span class="cell v0" title="Percepción y pensamiento: no destacado"><span class="sr">Percepción y pensamiento: no destacado</span></span></span>
+  </header><p class="case-number">Caso 6 de 10 · Viñeta ficticia</p>
+  <p class="ctx">Mujer de 26 años, estudiante de enfermería, con episodios desde hace 6 meses.</p>
+  <div class="pres">
+    <section><h3>Presentación</h3><ul><li>Tiene episodios de 5 a 15 minutos en los que cae y mueve brazos y piernas de forma irregular, con los ojos cerrados.</li><li>Después llora y recuerda parte de lo ocurrido. Los episodios aumentan en épocas de exámenes.</li><li>Ha acudido seis veces a urgencias y recibió dos antiepilépticos sin mejoría.</li><li>Refiere experiencias adversas en la infancia. Dice sentirse juzgada: «creen que finjo».</li></ul></section>
+    <aside><h3>Evaluación</h3><ul><li>EEG entre episodios normal.</li><li>El video-EEG registró un episodio típico sin actividad epiléptica.</li></ul></aside>
+  </div>
+  <div class="case-analysis"><details><summary><span class="n">1</span>Síntomas y dominios</summary><ul><li>Control motor y conciencia.</li><li>Emoción: ansiedad y llanto.</li><li>Estrés académico.</li><li>Funcionamiento: estudios y visitas a urgencias.</li><li>Experiencia de estigma.</li></ul></details>
+  <details><summary><span class="n">2</span>Sistemas implicados</summary><ul class="sislist"><li><span class="sysname">Estrés</span>Los episodios aumentan con el estrés académico.</li><li><span class="sysname">Emocional</span>Activación emocional intensa antes y después de los episodios.</li><li><span class="sysname">Cognitivo</span>Alteración del control voluntario y de la conciencia durante los episodios.</li></ul></details>
+  <details><summary><span class="n">3</span>Hipótesis: datos e inferencias</summary>
+    <div class="tw"><table><thead><tr><th>Dato</th><th>Interpretación clínica provisional</th><th>Tipo de apoyo</th></tr></thead><tbody><tr><td>Episodio típico registrado sin actividad epiléptica; ojos cerrados; movimientos irregulares</td><td>Crisis funcionales o disociativas; el video-EEG es la prueba de referencia</td><td><span class="tag tH">Referencia general</span></td></tr><tr><td>Mismo cuadro</td><td>Alteración del sentido de agencia y de la predicción del movimiento, con atención autodirigida (Espay et al., 2018)</td><td><span class="tag tHi">Hipótesis</span></td></tr><tr><td>Experiencias adversas tempranas</td><td>Factor de riesgo, no presente en todas las personas</td><td><span class="tag tH">Referencia general</span></td></tr></tbody></table></div></details>
+  <details><summary><span class="n">4</span>Alternativas e información faltante</summary>
+    <div class="two"><div><h4>Explicaciones alternativas o concurrentes</h4><ul><li>Epilepsia, que puede coexistir</li><li>Síncope</li><li>Otros trastornos paroxísticos</li></ul></div><div><h4>Información que falta</h4><ul><li>Otros tipos de episodios</li><li>Ansiedad, depresión o estrés postraumático</li><li>Efectos de los antiepilépticos</li><li>Desencadenantes concretos</li></ul></div></div></details>
+  <details><summary><span class="n">5</span>Prioridades clínicas</summary><ol><li>Comunicar el diagnóstico de forma clara y explicativa.</li><li>Revisar con neurología la retirada de antiepilépticos sin indicación.</li><li>Referir a tratamiento psicológico especializado.</li><li>Plan para urgencias que evite intervenciones innecesarias.</li></ol></details>
+  <details><summary><span class="n">6</span>Cómo comunicarlo</summary><blockquote>«Sus crisis son reales y no las está fingiendo. El episodio habitual registrado, interpretado junto con sus características y la historia clínica, apoya el diagnóstico de crisis funcionales. Revisaremos si hay otros tipos de episodios o una epilepsia coexistente. El estrés puede influir en algunas personas, pero no es una explicación obligatoria. Es un diagnóstico conocido y tiene tratamiento.»</blockquote></details></div>
+  <div class="nocon"><h3>Lo que el caso no permite concluir</h3><ul><li>Que el trauma infantil sea la causa: no conviene imponer esa explicación.</li><li>Que no pueda coexistir una epilepsia.</li><li>Que los episodios sean voluntarios.</li></ul></div>
+  <div class="foot">
+    <div><h4>Conexión con las sesiones</h4><ul class="conlist"><li><span class="ses">S1</span>Frontera entre neurología y psiquiatría; lenguaje no estigmatizante.</li><li><span class="ses">S2</span>Estrés y ansiedad.</li><li><span class="ses">S3</span>Diferenciar fenómenos y evitar el anclaje.</li><li><span class="ses">S4</span>Estrés, formulación y comunicación.</li></ul></div>
+    <div><h4>Referencias del caso</h4><ul class="refs"><li>Espay, A. J. et al. (2018). JAMA Neurology, 75(9), 1132–1141.</li></ul></div>
+  </div>
+</article>
+
+<article class="case" id="catatonia" data-sys="cog emo"><header class="case-head"><h2>Está despierta, pero casi no habla ni se mueve</h2></header><p class="case-number">Caso 7 de 10 · Viñeta ficticia</p><div class="safety" role="note"><p><strong>Alerta siempre visible:</strong> ingesta mínima e inmovilidad requieren valoración médica pronta. Fiebre, alteraciones autonómicas o deterioro de conciencia aumentan la urgencia. No esperar a terminar el ejercicio.</p></div><div class="pres-new"><p>Mujer de 29 años. Durante cinco días su familia la ha visto permanecer sentada durante periodos prolongados, mirar fijamente y responder con una o dos palabras. En las últimas 24 horas ha bebido muy poco. Antes trabajaba y conversaba con normalidad. Tuvo varias semanas de ánimo bajo, pero todavía no se ha evaluado el episodio afectivo. No se dispone de una lista fiable de medicamentos ni de consumo de sustancias.</p>
+<p><strong>Datos de exploración del caso ficticio:</strong> está despierta; mantiene espontáneamente un brazo elevado durante más de un minuto; en algunos momentos repite las últimas palabras de la entrevistadora. No se presentan signos vitales ni resultados de laboratorio. Su ausencia en la viñeta significa «por obtener», no «normales».</p></div><div class="case-analysis"><details><summary><span class="n">1</span>Síntomas y dominios</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿qué registro describe mejor lo observado?</p>
+<ul>
+<li>A. «No coopera porque está enojada con su familia».</li>
+<li>B. «Escasa producción verbal, poca actividad, mirada fija, postura mantenida y repetición de palabras».</li>
+</ul>
+<p><strong>Feedback:</strong> B separa conductas observables de supuestos motivos. A atribuye intención sin evidencia. Mutismo, posturas y ecofenómenos deben evaluarse en conjunto y en su contexto; ningún signo aislado confirma catatonía.</p>
+<p><strong>Solución consultable:</strong> organizar los datos en producción verbal, actividad motora, respuesta al entorno, ingesta y funcionamiento cotidiano. Preguntar a la familia cuándo empezó cada cambio y si fluctúa. No puntuar una escala completa con una fotografía o un clip incompleto. [R7a, R7b]</p></div></details><details><summary><span class="n">2</span>Sistemas funcionales</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿cuál formulación evita una localización excesiva?</p>
+<ul>
+<li>A. «Hay una alteración psicomotora que requiere evaluación clínica; el circuito o la causa individual no están establecidos».</li>
+<li>B. «La postura demuestra una lesión frontal».</li>
+</ul>
+<p><strong>Feedback:</strong> A conserva el nivel sindrómico. B convierte un modelo de redes en una lesión demostrada.</p>
+<p><strong>Solución consultable:</strong> para conectar con el módulo, considerar regulación de movimiento, iniciativa y comunicación; explorar emoción y cognición cuando sea posible. La disminución de habla no permite asumir ausencia de comprensión. El mapa de sistemas es una herramienta de organización docente, no una medición de actividad cerebral.</p></div></details><details><summary><span class="n">3</span>Hipótesis, datos e inferencias</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿qué conclusión provisional es defendible?</p>
+<ul>
+<li>A. «Es esquizofrenia catatónica confirmada».</li>
+<li>B. «Hay signos que hacen sospechar catatonía; todavía hay que establecer causa y alternativas».</li>
+</ul>
+<p><strong>Feedback:</strong> B distingue síndrome y etiología. A añade un diagnóstico que la historia no demuestra.</p>
+<p><strong>Solución consultable:</strong> dato: inmovilidad y postura mantenida; interpretación: patrón compatible con un síndrome catatónico; incertidumbre: etiología y coexistencias. El ánimo bajo merece evaluación, pero no confirma que explique todo. La evaluación clínica puede apoyarse en BFCRS; las pruebas y la respuesta terapéutica se interpretan por profesionales, nunca como demostración aislada. [R7a]</p></div></details><details><summary><span class="n">4</span>Alternativas e información faltante</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿qué información ayudaría más ahora?</p>
+<ul>
+<li>A. Signos vitales, hidratación, evolución, medicamentos y sus cambios, exploración neurológica e historia clínica adicional.</li>
+<li>B. Solo preguntar si ha tenido problemas familiares.</li>
+</ul>
+<p><strong>Feedback:</strong> A permite evaluar seguridad y causas. Los problemas familiares pueden ser relevantes, pero no sustituyen esa evaluación.</p>
+<p><strong>Solución consultable:</strong> considerar afecciones médicas o neurológicas, efectos o retirada de fármacos, estado epiléptico no convulsivo y otros cuadros con reducción del movimiento o habla. No tratar delirium y catatonía como excluyentes en todos los contextos. La selección de EEG, laboratorio o neuroimagen dependerá de la evaluación. [R7a]</p></div></details><details><summary><span class="n">5</span>Prioridades y criterios de referencia</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿esperar varios días a que vuelva a hablar o solicitar valoración hospitalaria pronta?</p>
+<p><strong>Feedback:</strong> solicitar valoración pronta. La escasa ingesta y la inmovilidad ya importan, aun sin diagnóstico definitivo.</p>
+<p><strong>Solución consultable:</strong> valorar estado médico y complicaciones; coordinar medicina, psiquiatría y neurología según hallazgos. Si aparecen fiebre, inestabilidad o deterioro, escalar inmediatamente. El tratamiento específico y el de la causa se planifican junto con la prevención de complicaciones; no es necesario que el alumno elija un fármaco para resolver esta actividad. [R7a]</p></div></details><details><summary><span class="n">6</span>Comunicación y cierre</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿qué mensaje evita el estigma?</p>
+<ul>
+<li>A. «Hasta que quiera cooperar no podemos ayudarla».</li>
+<li>B. «Vemos cambios importantes en su movimiento y comunicación. Vamos a valorarlos y cuidar que reciba líquidos y atención segura».</li>
+</ul>
+<p><strong>Feedback:</strong> B describe la necesidad sin acusar ni prometer una causa. Hablar directamente con ella y explicar antes de examinarla, aunque responda poco.</p>
+<p><strong>Límites de la solución:</strong> no se han confirmado catatonía, causa afectiva, lesión focal ni incapacidad permanente. Un video puede ilustrar signos, pero no reemplaza historia y exploración.</p>
+<p><strong>Conexión:</strong> S1 niveles de explicación; S2 síndrome psicomotor; S3 diagnóstico diferencial; S4 prioridad y comunicación.</p>
+<p><strong>Actividad audiovisual:</strong> usar el enlace de Rochester [V7], con pacientes simulados. Antes de abrir: «Anota dos signos visibles y un dato que el video no permite obtener». Después: comparar con la pauta, sin trasladar el diagnóstico del personaje del video a esta viñeta.</p></div></details></div><aside class="video-resource"><h3>Recurso audiovisual externo</h3><p><a href="https://www.urmc.rochester.edu/psychiatry/divisions/collaborative-care-and-wellness/bush-francis-catatonia-rating-scale/educational-modules" target="_blank" rel="noopener noreferrer">Rochester · simulaciones de catatonía · página en inglés; subtítulos por ítem declarados; reproducción pendiente</a></p><p>No descargado ni incrustado. Describe lo observable antes de interpretar; el recurso no representa a la persona ficticia del caso.</p></aside></article><article class="case" id="encefalitis" data-sys="cog per"><header class="case-head"><h2>Cambios de conducta que progresan hacia un cuadro neurológico</h2></header><p class="case-number">Caso 8 de 10 · Viñeta ficticia</p><div class="safety" role="note"><p><strong>Alerta siempre visible:</strong> deterioro rápido, crisis, fluctuación de conciencia o alteraciones autonómicas requieren valoración hospitalaria urgente. No esperar anticuerpos para solicitar atención.</p></div><div class="pres-new"><p>Mujer de 22 años, previamente independiente. En tres semanas comenzó con insomnio, temor intenso, ideas de persecución y dificultad para mantener conversaciones. En los últimos dos días intercala frases breves con periodos de escasa respuesta. Durante la evaluación presenta movimientos repetidos de labios y lengua y episodios de torsión de un brazo. Su acompañante informa una crisis convulsiva reciente. No hay diagnóstico etiológico ni resultados de anticuerpos.</p>
+<p><strong>Dato añadido ficticio para el ejercicio:</strong> la frecuencia cardiaca varía de forma marcada y el nivel de respuesta fluctúa. La medicación administrada antes de llegar todavía no está reconstruida. No se presupone que todos los movimientos sean crisis ni que sean causados por un medicamento.</p></div><div class="case-analysis"><details><summary><span class="n">1</span>Síntomas y dominios</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿basta describir «psicosis»?</p>
+<ul>
+<li>A. Sí; lo demás es parte de la agitación.</li>
+<li>B. No; documentar también habla, movimiento, crisis, conciencia y cambios autonómicos.</li>
+</ul>
+<p><strong>Feedback:</strong> B evita perder datos que cambian la evaluación. Registrar un dominio no elimina los demás.</p>
+<p><strong>Solución consultable:</strong> elaborar una línea temporal con cambios conductuales, lenguaje, movimientos y episodio convulsivo. Separar lo referido por el acompañante de lo observado. Identificar deterioro funcional y velocidad de progresión; no copiar la etiqueta «primer episodio psicótico» como explicación cerrada.</p></div></details><details><summary><span class="n">2</span>Sistemas funcionales</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿la afectación de varios dominios obliga a identificar un único circuito lesionado?</p>
+<ul>
+<li>A. No; primero organiza el síndrome y la prioridad de evaluación.</li>
+<li>B. Sí; el movimiento de la boca localiza toda la enfermedad.</li>
+</ul>
+<p><strong>Feedback:</strong> A. Las manifestaciones pueden involucrar redes distintas; un movimiento no identifica por sí mismo etiología ni localización única.</p>
+<p><strong>Solución consultable:</strong> conectar percepción/pensamiento, cognición, lenguaje y regulación motora/autonómica. Señalar que las cinco columnas actuales del mapa original necesitan un apartado adicional de signos neurológicos y autonómicos para este caso. No forzar una taquicardia dentro de la categoría «estrés».</p></div></details><details><summary><span class="n">3</span>Hipótesis, datos e inferencias</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿qué formulación corresponde a los datos?</p>
+<ul>
+<li>A. «Anti-NMDAR confirmada por disquinesias».</li>
+<li>B. «Sospecha de encefalitis; la posibilidad autoinmune merece estudio junto con otras causas».</li>
+</ul>
+<p><strong>Feedback:</strong> B. Ni la edad, ni la psicosis, ni los movimientos aislados confirman anticuerpos o mecanismo.</p>
+<p><strong>Solución consultable:</strong> los criterios clínicos de encefalitis autoinmune permiten organizar la sospecha antes de disponer de biomarcadores, pero requieren evaluación y exclusión razonable de alternativas. La confirmación anti-NMDAR necesita evidencia específica interpretada en contexto; no inventar resultados séricos o de LCR. [R8a]</p></div></details><details><summary><span class="n">4</span>Alternativas e información faltante</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿solicitar únicamente un anticuerpo o integrar estudios y exposición farmacológica?</p>
+<p><strong>Feedback:</strong> integrar. Un resultado aislado puede generar una certeza injustificada.</p>
+<p><strong>Solución consultable:</strong> considerar encefalitis infecciosa, crisis/estado epiléptico, causas metabólicas o tóxicas y reacciones a medicamentos, además de diagnósticos psiquiátricos. Precisar exposición a antipsicóticos, fiebre, signos focales, episodios previos y secuencia de síntomas. El equipo selecciona EEG, neuroimagen, laboratorio y estudio de LCR/anticuerpos según contexto. Una RM sin alteraciones no cierra por sí sola la investigación. [R8a, R8b]</p></div></details><details><summary><span class="n">5</span>Prioridades y referencia</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿consulta externa rutinaria o atención hospitalaria urgente?</p>
+<p><strong>Feedback:</strong> atención hospitalaria urgente por la progresión, crisis y cambios de conciencia/autonómicos del caso. No hace falta confirmar anti-NMDAR para reconocer esa prioridad.</p>
+<p><strong>Solución consultable:</strong> proteger funciones vitales y seguridad; comunicar una cronología breve al equipo de urgencias/neurología y coordinar evaluación psiquiátrica. Las decisiones sobre tratamiento infeccioso, inmunológico y eventual búsqueda tumoral corresponden al equipo especializado. No afirmar teratoma ni indicar inmunoterapia solo por esta actividad. [R8a]</p></div></details><details><summary><span class="n">6</span>Comunicación y cierre</summary><div class="solution-text"><p><strong>Decisión:</strong> elegir entre «es estrés universitario» y «los cambios de conducta se acompañan de signos neurológicos que requieren estudio urgente».</p>
+<p><strong>Feedback:</strong> la segunda opción reconoce los datos sin confirmar una causa aún desconocida.</p>
+<p><strong>Propuesta de comunicación:</strong> «Los cambios en su habla, movimientos y estado de respuesta necesitan atención hospitalaria. Hay varias causas posibles y vamos a estudiarlas de forma coordinada. Todavía no sabemos si se trata de una inflamación del cerebro ni cuál sería su origen».</p>
+<p><strong>Límites:</strong> no diagnosticar por parecido con una película o video; no equiparar cualquier psicosis con encefalitis. No atribuir los movimientos a anticuerpos sin correlación clínica.</p>
+<p><strong>Conexión:</strong> S1 varios niveles explicativos; S2 síntomas psiquiátricos en enfermedad neurológica; S3 temporalidad y causas médicas; S4 priorización y comunicación.</p>
+<p><strong>Actividad audiovisual:</strong> el estudio de Varley y colaboradores identifica tres videos suplementarios [V8]. Su acceso y reproducción no se verificaron; mantener como recurso pendiente, sin reproductor ficticio. El caso puede completarse con la descripción escrita de movimientos, sin sustituirla por imágenes de otra enfermedad.</p></div></details></div><aside class="video-resource"><h3>Recurso audiovisual externo</h3><p><a href="https://jnnp.bmj.com/content/90/6/724" target="_blank" rel="noopener noreferrer">JNNP · estudio y suplementos localizados; acceso 403 y reproducción pendiente</a></p><p>No descargado ni incrustado. Describe lo observable antes de interpretar; el recurso no representa a la persona ficticia del caso.</p></aside></article><article class="case" id="frontotemporal" data-sys="emo cog rec"><header class="case-head"><h2>Cambió su comportamiento, pero todavía recuerda sus citas</h2></header><p class="case-number">Caso 9 de 10 · Viñeta ficticia</p><div class="safety" role="note"><p><strong>Alerta siempre visible:</strong> la prioridad de este escenario es evaluación especializada y protección proporcionada de riesgos actuales. Un cambio brusco, delirium o peligro inmediato exige otra urgencia. El caso no autoriza retirar autonomía ni asumir incapacidad global.</p></div><div class="pres-new"><p>Hombre de 56 años. Su pareja describe 18 meses de cambios progresivos: comentarios socialmente inapropiados, indiferencia ante problemas de sus hijos y compras repetidas de productos que no utiliza. Antes era cuidadoso y sensible con su familia. Ha perdido responsabilidades laborales por errores y conflictos. Come dulces de forma insistente y repite el mismo recorrido a pie. Él cree que los demás exageran. Recuerda varias citas recientes y relata acontecimientos de la semana.</p>
+<p>No se proporciona una puntuación cognitiva, RM, biomarcadores ni diagnóstico de un familiar. No se ha establecido si existen periodos de ánimo elevado, sustancias o cambios de medicación.</p></div><div class="case-analysis"><details><summary><span class="n">1</span>Síntomas y dominios</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿qué descripción aporta información clínica?</p>
+<ul>
+<li>A. «Se volvió egoísta».</li>
+<li>B. «Cambio adquirido y progresivo en conducta social, empatía, hábitos, alimentación y funcionamiento».</li>
+</ul>
+<p><strong>Feedback:</strong> B permite investigar frecuencia, contexto y evolución. A transforma una impresión en explicación.</p>
+<p><strong>Solución consultable:</strong> pedir ejemplos concretos, fechas e impacto. Separar cambios nuevos de rasgos antiguos. La buena evocación de algunas citas no equivale a memoria íntegra ni descarta un trastorno neurocognitivo. Los cambios descritos son compatibles con los dominios clínicos de DFTc, pero no específicos. [R9a, R9b]</p></div></details><details><summary><span class="n">2</span>Sistemas funcionales</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿cómo organizar el patrón?</p>
+<ul>
+<li>A. Interacción entre regulación social/emocional, decisiones, motivación y hábitos; localización individual pendiente.</li>
+<li>B. Una sola región dañada queda demostrada por la falta de empatía.</li>
+</ul>
+<p><strong>Feedback:</strong> A utiliza redes como modelo de trabajo. B atribuye una lesión sin evaluación.</p>
+<p><strong>Solución consultable:</strong> conectar sistemas emocional, cognitivo y recompensa; añadir cognición social como apartado explícito. No inferir actividad neuronal a partir de la tabla docente. Evitar convertir «recuerda citas» en prueba de que el sistema cognitivo está preservado.</p></div></details><details><summary><span class="n">3</span>Hipótesis, datos e inferencias</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿qué nivel de certeza es sostenible?</p>
+<ul>
+<li>A. «Demencia frontotemporal definitiva».</li>
+<li>B. «Síndrome conductual progresivo que obliga a evaluar DFTc y alternativas».</li>
+</ul>
+<p><strong>Feedback:</strong> B. La categoría probable exige más evidencia que una lista de comportamientos; no disponemos de imagen ni evaluación suficiente para clasificar este caso como definitivo.</p>
+<p><strong>Solución consultable:</strong> los criterios internacionales distinguen posible, probable y confirmación patológica/genética. Usarlos para ordenar el razonamiento, no para diagnosticar automáticamente al sumar casillas. Es necesario considerar progresión, pérdida funcional y explicaciones alternativas; los criterios de probable incluyen imagen concordante. [R9a]</p></div></details><details><summary><span class="n">4</span>Alternativas e información faltante</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿qué conjunto de datos ayuda a distinguir hipótesis?</p>
+<ul>
+<li>A. Curso episódico o progresivo, sueño y ánimo, medicamentos/sustancias, historia basal, funcionamiento y evaluación neuropsicológica.</li>
+<li>B. Únicamente preguntar si su pareja se siente ofendida.</li>
+</ul>
+<p><strong>Feedback:</strong> A prueba hipótesis. El impacto familiar importa, pero no establece etiología.</p>
+<p><strong>Solución consultable:</strong> contrastar trastorno afectivo, efectos de sustancias/fármacos, otras enfermedades neurológicas o neurodegenerativas y rasgos previos. Solicitar ejemplos a más de un informante cuando sea apropiado; explorar cognición social y funciones ejecutivas. La imagen, análisis y biomarcadores se eligen por el especialista. No proponer una variante genética sin historia y evaluación que lo justifiquen. [R9a, R9b]</p></div></details><details><summary><span class="n">5</span>Prioridades y referencia</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿esperar a que falle la memoria o evaluar ahora?</p>
+<p><strong>Feedback:</strong> evaluar ahora. El deterioro laboral y conductual ya merece atención.</p>
+<p><strong>Solución consultable:</strong> referencia a neurología cognitiva o servicio equivalente; revisar riesgos concretos de gasto, conducción y convivencia sin dar por probada incapacidad. Acordar apoyos y valorar capacidad para cada decisión relevante. Incluir necesidades del cuidador y comunicación accesible con la persona. Si hay peligro actual, la respuesta debe corresponder a ese peligro y al marco clínico local. [R9b]</p></div></details><details><summary><span class="n">6</span>Comunicación y cierre</summary><div class="solution-text"><p><strong>Decisión:</strong> elegir entre «usted ya no puede decidir nada» y «queremos entender estos cambios y acordar apoyos para las dificultades concretas».</p>
+<p><strong>Feedback:</strong> la segunda opción preserva dignidad e incertidumbre. Un diagnóstico sospechado no resuelve por sí solo la capacidad de todas las decisiones.</p>
+<p><strong>Propuesta de comunicación:</strong> «Su familia ha notado cambios que afectan el trabajo y la convivencia. Recordar algunas cosas no explica por sí solo cómo están funcionando la planificación y las decisiones. Queremos evaluarlo con usted, revisar otras causas y acordar apoyos concretos».</p>
+<p><strong>Límites:</strong> no confirmar etiología neurodegenerativa, pronóstico individual, mutación ni incapacidad global. Un test de memoria normal aislado tampoco cierra la evaluación.</p>
+<p><strong>Conexión:</strong> S1 redes y cognición social; S2 conducta y afecto; S3 historia longitudinal y validez ecológica; S4 formulación y apoyos.</p>
+<p><strong>Actividad audiovisual:</strong> no se verificó un video clínico específico de conducta en DFTc. Hay una conferencia de UCSF con transcripción [V9], útil como ampliación conceptual, no como muestra de signos. El ejercicio básico usa la viñeta y ejemplos escritos; no presenta una conferencia como observación de un paciente.</p></div></details></div><aside class="video-resource"><h3>Recurso audiovisual externo</h3><p><a href="https://medconnection.ucsfhealth.org/videos/memory-and-cognitive-disorders-the-latest-prevention-diagnostic-and-treatment-strategies" target="_blank" rel="noopener noreferrer">UCSF · conferencia con transcripción en inglés; no demostración clínica validada</a></p><p>No descargado ni incrustado. Describe lo observable antes de interpretar; el recurso no representa a la persona ficticia del caso.</p></aside></article><article class="case" id="afasia" data-sys="cog"><header class="case-head"><h2>Habla con fluidez, pero dejó de comprender de forma súbita</h2></header><p class="case-number">Caso 10 de 10 · Viñeta ficticia</p><div class="safety" role="note"><p><strong>Alerta desde la primera línea:</strong> el comienzo súbito de dificultad para hablar o comprender es una señal de posible EVC. En una situación real se activa de inmediato el servicio de emergencias/circuito local de ictus; no se espera a reproducir un video, responder preguntas ni completar una escala. Que el síntoma mejore no elimina la necesidad de evaluación urgente. [R10a]</p></div><div class="pres-new"><p>Mujer de 67 años. Su hija la oyó conversar normalmente a las 09:00. A las 09:20 comenzó de manera brusca a hablar con frases largas que la hija no logra entender y a no seguir indicaciones sencillas. Tiene antecedentes de hipertensión. Está despierta y camina sin ayuda aparente. A las 09:30 persiste el cambio. No hay resultados de glucosa, neuroimagen ni diagnóstico etiológico. El inicio y la última hora conocida sin síntomas no se reservan para una revelación posterior.</p></div><div class="case-analysis"><details><summary><span class="n">1</span>Síntomas y dominios</summary><div class="solution-text"><p><strong>Decisión inmediata:</strong> ¿qué hacer primero?</p>
+<ul>
+<li>A. Activar atención de emergencia por posible EVC y comunicar la cronología.</li>
+<li>B. Hacerla ver un video para clasificar afasia antes de decidir.</li>
+<li>C. Esperar, porque puede caminar y no tiene debilidad evidente.</li>
+</ul>
+<p><strong>Feedback:</strong> A. La alteración súbita del lenguaje basta para justificar urgencia; caminar no descarta EVC. B y C demoran una evaluación necesaria. En la página futura, este feedback de seguridad debe aparecer aunque se elija otra opción. [R10a]</p>
+<p><strong>Solución consultable:</strong> documentar «lenguaje alterado de inicio súbito» y el dato temporal. El aprendizaje de nomenclatura viene después de activar la atención en el escenario simulado.</p></div></details><details><summary><span class="n">2</span>Sistemas funcionales</summary><div class="solution-text"><p><strong>Decisión:</strong> tras la activación de urgencias simulada, ¿qué distinción explorar?</p>
+<ul>
+<li>A. Comprensión, denominación, repetición y producción, considerando audición e idioma habitual.</li>
+<li>B. Solo si las frases suenan extrañas para concluir delirio.</li>
+</ul>
+<p><strong>Feedback:</strong> A describe funciones del lenguaje. Sonar extraño no demuestra pensamiento delirante ni que la persona haya perdido inteligencia.</p>
+<p><strong>Solución consultable:</strong> la afasia puede comprometer expresión, comprensión, lectura y escritura. La organización del lenguaje involucra redes, y el perfil no demuestra por sí solo un vaso o lesión exactos. No obligar este caso a la única columna «percepción y pensamiento»; añadir lenguaje. [R10b]</p></div></details><details><summary><span class="n">3</span>Hipótesis, datos e inferencias</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿qué formulación es adecuada antes de imagen?</p>
+<ul>
+<li>A. «Posible afasia aguda, con sospecha vascular que necesita evaluación inmediata».</li>
+<li>B. «Esquizofrenia de inicio tardío» o «infarto de una arteria específica confirmado».</li>
+</ul>
+<p><strong>Feedback:</strong> A expresa síndrome y prioridad sin fingir confirmación. Las dos conclusiones de B exceden la información.</p>
+<p><strong>Solución consultable:</strong> un perfil fluido con comprensión alterada puede orientar la descripción afásica, pero no hay que forzar un subtipo clásico ni usarlo como requisito para pedir ayuda. El ejemplo audiovisual posterior es distinto de la paciente ficticia. [R10b]</p></div></details><details><summary><span class="n">4</span>Alternativas e información faltante</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿qué información comunicar sin retrasar la atención?</p>
+<ul>
+<li>A. Última hora conocida sin síntomas, comienzo observado, evolución, medicamentos relevantes, antecedentes y contacto del testigo.</li>
+<li>B. Una interpretación extensa sobre el significado de cada palabra.</li>
+</ul>
+<p><strong>Feedback:</strong> A ayuda al circuito urgente. La descripción detallada puede completarse después.</p>
+<p><strong>Solución consultable:</strong> el equipo evalúa causas vasculares y posibles imitadores, incluidos alteraciones metabólicas y crisis. No inventar una glucosa normal, una TAC normal ni ausencia de fármacos anticoagulantes. Preguntar por audición e idioma no debe convertirse en demora ante un cambio claro respecto a la situación basal.</p></div></details><details><summary><span class="n">5</span>Prioridades y referencia</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿si mejora el habla puede cancelarse la urgencia?</p>
+<p><strong>Feedback:</strong> no. La mejoría transitoria también requiere evaluación urgente. El equipo determina diagnóstico y opciones de tratamiento; el ejercicio no decide trombólisis ni otra intervención. [R10a]</p>
+<p><strong>Solución consultable:</strong> activar el circuito local, transferir una síntesis con horas claras y evitar que la valoración extensa del lenguaje retrase la atención. Tras estabilización, valorar necesidades de comunicación y rehabilitación del lenguaje según resultados clínicos. [R10b]</p></div></details><details><summary><span class="n">6</span>Comunicación y cierre</summary><div class="solution-text"><p><strong>Decisión:</strong> ¿hablar sobre ella como si no estuviera o dirigirse a ella con apoyos?</p>
+<p><strong>Feedback:</strong> dirigirse a ella, con frases breves y tiempo para responder; comprobar comprensión sin infantilizar. Puede ayudar señalar, gesticular o usar apoyos gráficos. No asumir que todo sí/no verbal es fiable sin comprobarlo. [R10b]</p>
+<p><strong>Propuesta de comunicación:</strong> «Este cambio comenzó de repente y necesita atención de emergencia. Vamos a explicarle cada paso con palabras sencillas. Su hija nos ayudará con la hora de inicio; seguiremos hablando directamente con usted».</p>
+<p><strong>Límites:</strong> no confirmar tipo de EVC, vaso afectado, afasia clásica ni pronóstico a partir del habla o del video. La ausencia de debilidad y la recuperación parcial no descartan una urgencia.</p>
+<p><strong>Conexión:</strong> S1 lenguaje y redes; S2 expresión versus comprensión; S3 inicio temporal y diagnóstico diferencial; S4 priorización y comunicación apoyada.</p>
+<p><strong>Actividad audiovisual solo después del cierre de emergencia simulado:</strong> usar Utah, secciones «Receptive language» y «Expressive language» [V10]. La fuente dice explícitamente que el ejemplo receptivo es solo audio. Pedir qué aspectos se oyen, cuáles requerirían exploración y qué no puede inferirse de la grabación. No reproducir como reglas universales los juicios de pronóstico incluidos en la página antigua.</p></div></details></div><aside class="video-resource"><h3>Recurso audiovisual externo</h3><p><a href="https://neurologicexam.med.utah.edu/adult/html/mentalstatus_abnormal.html" target="_blank" rel="noopener noreferrer">Utah · ejemplos de lenguaje; el receptivo es solo audio; reproducción y subtítulos pendientes</a></p><p>No descargado ni incrustado. Describe lo observable antes de interpretar; el recurso no representa a la persona ficticia del caso.</p></aside></article><section class="biblio" aria-labelledby="bib">
+  <h2 id="bib">Referencias conservadas del original</h2>
+  <p class="note">Las referencias se citan a partir del conocimiento de la literatura y no se verificaron en línea al preparar este material; se omiten los DOI. Confirmar volumen, páginas y año antes de distribuir. Las referencias generales de cada sesión están en las notas de sus presentaciones.</p>
+  <ul><li>Bergink, V., Rasgon, N. y Wisner, K. L. (2016). Postpartum psychosis: madness, mania, and melancholia in motherhood. American Journal of Psychiatry, 173(12), 1179–1188.</li><li>Berridge, K. C. y Robinson, T. E. (1998). What is the role of dopamine in reward: hedonic impact, reward learning, or incentive salience? Brain Research Reviews, 28(3), 309–369.</li><li>Cummings, J. L. (1993). Frontal-subcortical circuits and human behavior. Archives of Neurology, 50(8), 873–880.</li><li>Di Forti, M. et al. (2019). The contribution of cannabis use to variation in the incidence of psychotic disorder across Europe (EU-GEI). The Lancet Psychiatry, 6(5), 427–436.</li><li>Espay, A. J. et al. (2018). Current concepts in diagnosis and treatment of functional neurological disorders. JAMA Neurology, 75(9), 1132–1141.</li><li>Fusar-Poli, P. et al. (2013). The psychosis high-risk state: a comprehensive state-of-the-art review. JAMA Psychiatry, 70(1), 107–120.</li><li>Inouye, S. K., Westendorp, R. G. J. y Saczynski, J. S. (2014). Delirium in elderly people. The Lancet, 383(9920), 911–922.</li><li>Petersen, S. E. y Posner, M. I. (2012). The attention system of the human brain: 20 years after. Annual Review of Neuroscience, 35, 73–89.</li><li>Rabinak, C. A. y Nirenberg, M. J. (2010). Dopamine agonist withdrawal syndrome in Parkinson disease. Archives of Neurology, 67(1), 58–63.</li><li>van Os, J. et al. (2009). A systematic review and meta-analysis of the psychosis continuum. Psychological Medicine, 39(2), 179–195.</li><li>Weintraub, D. et al. (2010). Impulse control disorders in Parkinson disease: a cross-sectional study of 3090 patients. Archives of Neurology, 67(5), 589–595.</li></ul>
+  <p class="note">Material docente para el diplomado. Los casos ilustran razonamiento clínico y no sustituyen la evaluación de una persona ni los protocolos locales.</p>
+</section></main>
+
+
+<section class="wrap biblio" id="reviewed-sources"><h2>Fuentes revisadas y recursos audiovisuales</h2><p>Versión de 10 casos · 21 de octubre de 2026. Los medios se ofrecen como enlaces, sin reproducción verificada ni descarga. Las fuentes históricas del original se conservan; no se certifica toda esa bibliografía.</p><p><strong>R7a.</strong> Rogers JP et al. Evidence-based consensus guidelines for the management of catatonia: Recommendations from the British Association for Psychopharmacology. *Journal of Psychopharmacology*. 2023;37(4):327–369. DOI: <a href="https://doi.org/10.1177/02698811231158232" target="_blank" rel="noopener noreferrer">10.1177/02698811231158232</a>. <a href="https://www.bap.org.uk/pdfs/BAP_Guidelines-Catatonia.pdf" target="_blank" rel="noopener noreferrer">Texto de la guía en BAP</a>, consultado: evaluación, diferenciales y tratamiento/prioridades. No se reproduce su tabla ni protocolo farmacológico.</p>
+<p><strong>R7b.</strong> University of Rochester Medical Center. <a href="https://www.urmc.rochester.edu/psychiatry/divisions/collaborative-care-and-wellness/bush-francis-catatonia-rating-scale/bfcrs" target="_blank" rel="noopener noreferrer">BFCRS, ejemplos y puntuación por ítem</a>. Página consultada; usar para formar en observación, sin sustituir evaluación clínica.</p>
+<p><strong>R8a.</strong> Graus F et al. A clinical approach to diagnosis of autoimmune encephalitis. *Lancet Neurology*. 2016;15(4):391–404. DOI: <a href="https://doi.org/10.1016/S1474-4422(15" target="_blank" rel="noopener noreferrer">10.1016/S1474-4422(15)00401-9</a>00401-9). <a href="https://pubmed.ncbi.nlm.nih.gov/26906964/" target="_blank" rel="noopener noreferrer">Registro bibliográfico</a>. Referencia y resumen/fragmentos indexados localizados; la apertura del texto PMC presentó verificación de navegador. No se afirma haber comprobado íntegramente todos sus criterios ni se implementan umbrales diagnósticos.</p>
+<p><strong>R8b.</strong> Cleveland Clinic. <a href="https://my.clevelandclinic.org/departments/neurological/depts/multiple-sclerosis/ms-approaches/diagnosis-and-management-of-autoimmune-encephalitis" target="_blank" rel="noopener noreferrer">Diagnosis and Management of Autoimmune Encephalitis</a>. Recurso institucional sobre integración clínica y pruebas. Consultar fuente para ampliar, no interpretar anticuerpos de forma aislada.</p>
+<p><strong>R8c / V8.</strong> Varley JA et al. <a href="https://jnnp.bmj.com/content/90/6/724" target="_blank" rel="noopener noreferrer">The movement disorder associated with NMDAR antibody-encephalitis is complex and characteristic: an expert video-rating study</a>. *Journal of Neurology, Neurosurgery &amp; Psychiatry*. 2019;90:724–726. DOI: <a href="https://doi.org/10.1136/jnnp-2018-318584" target="_blank" rel="noopener noreferrer">10.1136/jnnp-2018-318584</a>. Referencia y suplementos localizados en índice; acceso a texto y medios no confirmado por 403. No se transcriben descripciones de clips no vistos.</p>
+<p><strong>R9a.</strong> Rascovsky K et al. Sensitivity of revised diagnostic criteria for the behavioural variant of frontotemporal dementia. *Brain*. 2011;134(9):2456–2477. DOI: <a href="https://doi.org/10.1093/brain/awr179" target="_blank" rel="noopener noreferrer">10.1093/brain/awr179</a>. <a href="https://www.theaftd.org/wp-content/uploads/2018/03/Table-3-International-consensus-criteria-for-behavioural-variant-FTD.pdf" target="_blank" rel="noopener noreferrer">Tabla de criterios reproducida con autorización en AFTD</a>, leída. La apertura PMC del artículo completo mostró verificación de navegador. El borrador resume niveles sin copiar la tabla.</p>
+<p><strong>R9b.</strong> UCSF Memory and Aging Center. <a href="https://memory.ucsf.edu/dementia/ftd/behavioral-variant-frontotemporal-dementia" target="_blank" rel="noopener noreferrer">Behavioral Variant Frontotemporal Dementia</a>. Página institucional consultada para perfil conductual y atención/apoyo. No se considera una prueba diagnóstica.</p>
+<p><strong>R10a.</strong> CDC. <a href="https://www.cdc.gov/stroke/signs-symptoms/index.html" target="_blank" rel="noopener noreferrer">Signs and Symptoms of Stroke</a>. Actualización visible: 19 de mayo de 2026. Página consultada para reconocer emergencia y registrar tiempo. El circuito debe adaptarse al lugar de uso; no se usan las ventanas simplificadas de la página para decidir tratamientos.</p>
+<p><strong>R10b.</strong> NIH/NIDCD. <a href="https://www.nidcd.nih.gov/health/aphasia" target="_blank" rel="noopener noreferrer">Aphasia</a>. Página consultada para lenguaje, evaluación y apoyos de comunicación. No se reproducen ejemplos textuales de habla ni se asume un pronóstico universal.</p><h3>Qué se sabe de los videos</h3><ul><li>Rochester · simulaciones de catatonía · página en inglés; subtítulos por ítem declarados; reproducción pendiente</li><li>JNNP · estudio y suplementos localizados; acceso 403 y reproducción pendiente</li><li>UCSF · conferencia con transcripción en inglés; no demostración clínica validada</li><li>Utah · ejemplos de lenguaje; el receptivo es solo audio; reproducción y subtítulos pendientes</li></ul><p>Rochester: licencia de redistribución no verificada. JNNP: acceso y derechos de medios pendientes. UCSF: conferencia, licencia no verificada. Utah declara uso educativo no comercial con atribución y condiciones CC BY-NC-SA; aquí solo se enlaza. Cada enlace permite consultar la fuente original; no se redistribuyen grabaciones.</p></section><footer class="brand-footer wrap"><strong>NeuroPsicoLocos</strong><p>Casos clínicos integradores · Neuropsiquiatría IN4 · Material docente con viñetas ficticias.</p><p>Los ejercicios no sustituyen la evaluación clínica ni los protocolos locales. Los recursos externos conservan sus derechos y atribuciones.</p></footer><script>
+(function (root) {
+  'use strict';
+  function create(ids) {
+    if (!ids.length || new Set(ids).size !== ids.length) throw Error('IDs inválidos');
+    return { ids: ids.slice(), mode: 'guided', active: ids[0], filter: 'all', cases: Object.fromEntries(ids.map(id => [id, { step: 0, answers: {}, revealed: {} }])) };
+  }
+  function requireCase(state, id) { if (!state.cases[id]) throw Error('Caso desconocido'); return state.cases[id]; }
+  function select(state, id) { requireCase(state, id); state.active = id; }
+  function mode(state, value) { if (!['guided', 'reading'].includes(value)) throw Error('Modo inválido'); state.mode = value; }
+  function answer(state, id, step, option, data) {
+    const c = requireCase(state, id), q = data[id] && data[id][step];
+    if (!q || !Number.isInteger(option) || option < 0 || option >= q.options.length) throw Error('Respuesta inválida');
+    c.answers[step] = option; return option === q.correct;
+  }
+  function reveal(state, id) { const c = requireCase(state,id); c.revealed[c.step] = true; }
+  function canNext(state,id) { const c = requireCase(state,id); return c.step < 5 && (Object.hasOwn(c.answers,c.step) || c.revealed[c.step]); }
+  function next(state,id) { const c = requireCase(state,id); if (canNext(state,id)) c.step++; return c.step; }
+  function previous(state,id) { const c = requireCase(state,id); c.step = Math.max(0,c.step-1); return c.step; }
+  function reset(state,id) { requireCase(state,id); state.cases[id] = {step:0,answers:{},revealed:{}}; }
+  function visible(state,sys) { return state.ids.filter(id => state.filter === 'all' || (sys[id] || []).includes(state.filter)); }
+  const api = {create,select,mode,answer,reveal,canNext,next,previous,reset,visible};
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  else root.StudyCore = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+</script>
+<script id="study-data" type="application/json">{"tce": [{"q": "¿Qué dato expresa funcionamiento cotidiano?", "options": ["Pérdida de empleo por conflictos.", "Solo importa la localización en la imagen."], "correct": 0, "feedback": "El funcionamiento es parte de la evaluación; una imagen no explica por sí sola todas las dificultades."}, {"q": "¿Cómo usar el modelo de sistemas?", "options": ["Atribuir cada conducta exclusivamente a una zona.", "Integrar control, emoción, sueño, dolor y alcohol."], "correct": 1, "feedback": "Las interacciones ayudan a formular; no demuestran mecanismos individuales."}, {"q": "¿Qué permite afirmar la lentitud?", "options": ["Requiere evaluación; daño axonal difuso es una hipótesis.", "Confirma daño axonal difuso."], "correct": 0, "feedback": "Lentitud y olvidos no prueban un tipo específico de lesión."}, {"q": "¿Qué información falta para atribuir los cambios?", "options": ["Ninguna: la contusión resuelve la causalidad.", "Funcionamiento previo, consumo, medicamentos y riesgos."], "correct": 1, "feedback": "Reconstruir el estado basal evita atribuir todos los cambios al traumatismo."}, {"q": "¿Qué prioridad explorar primero?", "options": ["Seguridad en convivencia y riesgo hacia sí mismo u otras personas.", "Retorno laboral antes de valorar riesgos."], "correct": 0, "feedback": "Los apoyos y la rehabilitación se organizan después de identificar necesidades inmediatas de seguridad."}, {"q": "¿Qué explicación es más prudente?", "options": ["La lesión explica todo y determina el futuro.", "Hay dificultades evaluables y apoyos; no todo está explicado aún."], "correct": 1, "feedback": "Explicar sin culpabilizar ni ofrecer determinismo permite acordar evaluación y apoyos."}], "parkinson": [{"q": "¿Qué dominios documentar?", "options": ["Solo el gasto: lo demás no importa.", "Apuestas, compras, ansiedad, percepción y efecto financiero."], "correct": 1, "feedback": "La evaluación integra conducta, funcionamiento y posibles riesgos."}, {"q": "¿Qué aporta el modelo de recompensa?", "options": ["Organiza una explicación posible junto con control y contexto.", "Demuestra la actividad del estriado de esta persona."], "correct": 0, "feedback": "Un modelo no constituye una medición individual del cerebro."}, {"q": "¿Qué significa que el problema siga al aumento de dosis?", "options": ["Demuestra que el medicamento es la única causa.", "Apoya una asociación a investigar."], "correct": 1, "feedback": "La cronología importa, pero no elimina otras causas o factores concurrentes."}, {"q": "¿Qué información ampliaría?", "options": ["Dosis, cronología, otras conductas, deudas, riesgo suicida y otros fármacos.", "Solo si antes le gustaba comprar."], "correct": 0, "feedback": "Es necesario precisar exposiciones, funcionamiento y riesgo actual."}, {"q": "¿Qué hacer con el agonista?", "options": ["Suspenderlo de golpe al reconocer apuestas.", "Coordinar revisión especializada y evitar suspensión brusca por cuenta propia."], "correct": 1, "feedback": "La modificación requiere supervisión; es importante vigilar efectos de retirada y síntomas motores."}, {"q": "¿Cómo explicar el problema?", "options": ["Describir la posible asociación sin llamarla defecto moral.", "Decir que no tiene voluntad."], "correct": 0, "feedback": "La explicación facilita colaboración y protección financiera acordada, sin culpabilizar."}], "adolescente": [{"q": "¿Qué descripción conserva el contexto?", "options": ["Experiencias inusuales, ánimo bajo, acoso, consumo y menor funcionamiento.", "Esquizofrenia confirmada por oír su nombre al dormirse."], "correct": 0, "feedback": "Una experiencia aislada al inicio del sueño no confirma un trastorno psicótico."}, {"q": "¿Cómo integrar los sistemas?", "options": ["La vulnerabilidad vuelve irrelevante el acoso.", "Considerar estrés, emoción, motivación y percepción sin causalidad única."], "correct": 1, "feedback": "La experiencia social y los datos clínicos deben conservarse en la formulación."}, {"q": "¿Qué significa que dude de sus interpretaciones?", "options": ["Es un dato útil, sin excluir necesidad de evaluar.", "Descarta cualquier riesgo clínico."], "correct": 0, "feedback": "La duda conservada no elimina el deterioro funcional ni la necesidad de seguimiento."}, {"q": "¿Qué información falta?", "options": ["Solo la historia de la tía.", "Riesgo suicida, evolución, acoso actual, consumo y apoyos."], "correct": 1, "feedback": "Los antecedentes familiares no sustituyen la evaluación del joven."}, {"q": "¿Qué prioridad corresponde?", "options": ["Evaluación de riesgos y referencia especializada sin demora.", "Esperar un diagnóstico definitivo de esquizofrenia."], "correct": 0, "feedback": "Es posible ofrecer apoyo y evaluación temprana sin fijar un diagnóstico que no está demostrado."}, {"q": "¿Qué comunicación ayuda?", "options": ["Asegurar que nada puede pasar porque mantiene dudas.", "Validar el malestar y explicar por qué se propone evaluar."], "correct": 1, "feedback": "Evitar tanto alarmismo como falsa tranquilidad; incluir la perspectiva del adolescente."}], "posparto": [{"q": "¿Qué domina la prioridad de este caso?", "options": ["Tristeza leve del posparto sin urgencia.", "Inicio reciente con psicosis, activación y desorientación."], "correct": 1, "feedback": "La viñeta ya requiere evaluación inmediata de la madre y seguridad del bebé."}, {"q": "¿Cómo organizar el síndrome?", "options": ["Integrar ánimo, pensamiento, atención, sueño y signos médicos.", "Explicarlo todo por un cambio hormonal confirmado."], "correct": 0, "feedback": "Los posibles desencadenantes no excluyen causas médicas concurrentes."}, {"q": "¿Qué aporta la historia familiar?", "options": ["Demuestra una causa genética individual.", "Es relevante para la sospecha y el riesgo."], "correct": 1, "feedback": "La asociación familiar no confirma el mecanismo ni un diagnóstico definitivo de bipolaridad."}, {"q": "¿Qué información obtener?", "options": ["Signos vitales, exploración, estudios y riesgos para madre/bebé.", "Solo el estado de ánimo."], "correct": 0, "feedback": "Hay que investigar causas médicas; no se presuponen signos vitales normales."}, {"q": "¿Qué acción corresponde ahora?", "options": ["Terminar el análisis teórico antes de pedir ayuda.", "Evaluación médica y psiquiátrica inmediata con protección de madre y bebé."], "correct": 1, "feedback": "La prioridad de seguridad no debe quedar detrás del recorrido docente."}, {"q": "¿Cómo comunicarlo?", "options": ["Necesita atención inmediata; hay tratamiento y no es culpa de ella.", "Es una reacción normal que pasará sin atención."], "correct": 0, "feedback": "Comunicar urgencia de forma serena y no estigmatizante ayuda a movilizar apoyo."}], "delirium": [{"q": "¿Qué patrón importa más?", "options": ["Cambio agudo y fluctuante de atención y conciencia.", "Olvidos previos como explicación suficiente de todo."], "correct": 0, "feedback": "El cambio agudo requiere evaluación aunque exista deterioro previo."}, {"q": "¿Qué dominios integrar?", "options": ["Solo alucinaciones: equivalen a psicosis primaria.", "Atención, conciencia, percepción, sueño y contexto médico."], "correct": 1, "feedback": "Las alucinaciones aisladas no identifican la causa del síndrome."}, {"q": "¿Qué se puede concluir sobre demencia?", "options": ["No se confirma por esta evaluación aguda; hay que reconstruir el estado basal.", "Toda prueba cognitiva es inútil durante el episodio."], "correct": 0, "feedback": "Se evalúan atención y cognición para identificar y seguir delirium; los resultados no bastan para atribuir deterioro persistente a demencia."}, {"q": "¿Qué revisar?", "options": ["Solo la memoria reciente.", "Fármacos, dolor, retención, oxigenación, infección y estado previo."], "correct": 1, "feedback": "La formulación debe buscar precipitantes y causas concurrentes."}, {"q": "¿Qué prioridad corresponde?", "options": ["Evaluación clínica pronta, causas y seguridad.", "Esperar a después del alta para valorar el cambio agudo."], "correct": 0, "feedback": "El seguimiento posterior es importante, pero no reemplaza el manejo actual."}, {"q": "¿Qué mensaje es prudente?", "options": ["Siempre se resolverá por completo.", "La confusión requiere evaluar varias causas; la evolución es variable."], "correct": 1, "feedback": "Explicar y orientar a la familia sin prometer recuperación total."}], "funcional": [{"q": "¿Cuál es el dato del registro descrito?", "options": ["Solo EEG entre episodios normal.", "Video-EEG de un episodio habitual sin correlato epiléptico reportado."], "correct": 1, "feedback": "La viñeta sí aporta un episodio típico registrado; no reducirla a un EEG interictal."}, {"q": "¿Cómo tratar el estrés en la formulación?", "options": ["Como posible factor entre otros.", "Como causa obligatoria demostrada."], "correct": 0, "feedback": "La asociación con exámenes o experiencias adversas no determina un mecanismo individual."}, {"q": "¿Cómo interpretar el video-EEG?", "options": ["Como exclusión absoluta de cualquier epilepsia.", "Junto con historia, semiología y tipos de episodios."], "correct": 1, "feedback": "Es necesario reconocer el contexto electroclínico y posibles episodios coexistentes."}, {"q": "¿Qué falta preguntar?", "options": ["Si hay otros tipos de episodios y otras indicaciones de los medicamentos.", "Nada, todos los episodios son idénticos por definición."], "correct": 0, "feedback": "Distinguir eventos evita generalizar una conclusión a todos los episodios."}, {"q": "¿Qué corresponde respecto a medicamentos?", "options": ["Retirada por cuenta propia.", "Revisión con neurología según indicaciones y coexistencias."], "correct": 1, "feedback": "La revisión especializada evita tratamientos sin indicación y cambios inseguros."}, {"q": "¿Qué mensaje es apropiado?", "options": ["Son episodios reales e involuntarios; explicar el fundamento clínico.", "Como no son epilépticos, son fingidos."], "correct": 0, "feedback": "Validación, explicación y plan acordado son parte de la atención."}], "catatonia": [{"q": "¿qué registro describe mejor lo observado?", "options": ["«No coopera porque está enojada con su familia».", "«Escasa producción verbal, poca actividad, mirada fija, postura mantenida y repetición de palabras»."], "correct": 1, "feedback": "B separa conductas observables de supuestos motivos. A atribuye intención sin evidencia. Mutismo, posturas y ecofenómenos deben evaluarse en conjunto y en su contexto; ningún signo aislado confirma catatonía."}, {"q": "¿cuál formulación evita una localización excesiva?", "options": ["«La postura demuestra una lesión frontal».", "«Hay una alteración psicomotora que requiere evaluación clínica; el circuito o la causa individual no están establecidos»."], "correct": 1, "feedback": "A conserva el nivel sindrómico. B convierte un modelo de redes en una lesión demostrada."}, {"q": "¿qué conclusión provisional es defendible?", "options": ["«Es esquizofrenia catatónica confirmada».", "«Hay signos que hacen sospechar catatonía; todavía hay que establecer causa y alternativas»."], "correct": 1, "feedback": "B distingue síndrome y etiología. A añade un diagnóstico que la historia no demuestra."}, {"q": "¿qué información ayudaría más ahora?", "options": ["Solo preguntar si ha tenido problemas familiares.", "Signos vitales, hidratación, evolución, medicamentos y sus cambios, exploración neurológica e historia clínica adicional."], "correct": 1, "feedback": "A permite evaluar seguridad y causas. Los problemas familiares pueden ser relevantes, pero no sustituyen esa evaluación."}, {"q": "¿esperar varios días a que vuelva a hablar o solicitar valoración hospitalaria pronta?", "options": ["Solicitar valoración hospitalaria pronta.", "Esperar varios días."], "correct": 0, "feedback": "La ingesta mínima y la inmovilidad ya justifican atención."}, {"q": "¿qué mensaje evita el estigma?", "options": ["«Vemos cambios importantes en su movimiento y comunicación. Vamos a valorarlos y cuidar que reciba líquidos y atención segura».", "«Hasta que quiera cooperar no podemos ayudarla»."], "correct": 0, "feedback": "B describe la necesidad sin acusar ni prometer una causa. Hablar directamente con ella y explicar antes de examinarla, aunque responda poco."}], "encefalitis": [{"q": "¿basta describir «psicosis»?", "options": ["No; documentar también habla, movimiento, crisis, conciencia y cambios autonómicos.", "Sí; lo demás es parte de la agitación."], "correct": 0, "feedback": "B evita perder datos que cambian la evaluación. Registrar un dominio no elimina los demás."}, {"q": "¿la afectación de varios dominios obliga a identificar un único circuito lesionado?", "options": ["No; primero organiza el síndrome y la prioridad de evaluación.", "Sí; el movimiento de la boca localiza toda la enfermedad."], "correct": 0, "feedback": "A. Las manifestaciones pueden involucrar redes distintas; un movimiento no identifica por sí mismo etiología ni localización única."}, {"q": "¿qué formulación corresponde a los datos?", "options": ["«Sospecha de encefalitis; la posibilidad autoinmune merece estudio junto con otras causas».", "«Anti-NMDAR confirmada por disquinesias»."], "correct": 0, "feedback": "B. Ni la edad, ni la psicosis, ni los movimientos aislados confirman anticuerpos o mecanismo."}, {"q": "¿solicitar únicamente un anticuerpo o integrar estudios y exposición farmacológica?", "options": ["Integrar clínica, estudios y exposición a medicamentos.", "Solicitar solo un anticuerpo y cerrar el diagnóstico."], "correct": 0, "feedback": "Los resultados aislados no sustituyen la evaluación del síndrome."}, {"q": "¿consulta externa rutinaria o atención hospitalaria urgente?", "options": ["Consulta externa rutinaria.", "Atención hospitalaria urgente."], "correct": 1, "feedback": "Crisis, deterioro y cambios de conciencia/autonómicos requieren urgencia."}, {"q": "elegir entre «es estrés universitario» y «los cambios de conducta se acompañan de signos neurológicos que requieren estudio urgente».", "options": ["Reconocer los cambios neurológicos y la necesidad de estudio urgente.", "Atribuir todo al estrés universitario."], "correct": 0, "feedback": "La explicación debe expresar urgencia e incertidumbre, sin confirmar una etiología."}], "frontotemporal": [{"q": "¿qué descripción aporta información clínica?", "options": ["«Se volvió egoísta».", "«Cambio adquirido y progresivo en conducta social, empatía, hábitos, alimentación y funcionamiento»."], "correct": 1, "feedback": "B permite investigar frecuencia, contexto y evolución. A transforma una impresión en explicación."}, {"q": "¿cómo organizar el patrón?", "options": ["Una sola región dañada queda demostrada por la falta de empatía.", "Interacción entre regulación social/emocional, decisiones, motivación y hábitos; localización individual pendiente."], "correct": 1, "feedback": "A utiliza redes como modelo de trabajo. B atribuye una lesión sin evaluación."}, {"q": "¿qué nivel de certeza es sostenible?", "options": ["«Demencia frontotemporal definitiva».", "«Síndrome conductual progresivo que obliga a evaluar DFTc y alternativas»."], "correct": 1, "feedback": "B. La categoría probable exige más evidencia que una lista de comportamientos; no disponemos de imagen ni evaluación suficiente para clasificar este caso como definitivo."}, {"q": "¿qué conjunto de datos ayuda a distinguir hipótesis?", "options": ["Únicamente preguntar si su pareja se siente ofendida.", "Curso episódico o progresivo, sueño y ánimo, medicamentos/sustancias, historia basal, funcionamiento y evaluación neuropsicológica."], "correct": 1, "feedback": "A prueba hipótesis. El impacto familiar importa, pero no establece etiología."}, {"q": "¿esperar a que falle la memoria o evaluar ahora?", "options": ["Evaluar ahora por la progresión y pérdida funcional.", "Esperar a que falle la memoria."], "correct": 0, "feedback": "Los cambios conductuales progresivos merecen evaluación aunque se recuerden algunas citas."}, {"q": "elegir entre «usted ya no puede decidir nada» y «queremos entender estos cambios y acordar apoyos para las dificultades concretas».", "options": ["Asumir incapacidad global.", "Acordar evaluación y apoyos para decisiones concretas."], "correct": 1, "feedback": "La capacidad no se determina globalmente por una sospecha diagnóstica."}], "afasia": [{"q": "¿qué hacer primero?", "options": ["Activar atención de emergencia por posible EVC y comunicar la cronología.", "Hacerla ver un video para clasificar afasia antes de decidir.", "Esperar, porque puede caminar y no tiene debilidad evidente."], "correct": 0, "feedback": "A. La alteración súbita del lenguaje basta para justificar urgencia; caminar no descarta EVC. B y C demoran una evaluación necesaria. En la página futura, este feedback de seguridad debe aparecer aunque se elija otra opción. [R10a]"}, {"q": "tras la activación de urgencias simulada, ¿qué distinción explorar?", "options": ["Comprensión, denominación, repetición y producción, considerando audición e idioma habitual.", "Solo si las frases suenan extrañas para concluir delirio."], "correct": 0, "feedback": "A describe funciones del lenguaje. Sonar extraño no demuestra pensamiento delirante ni que la persona haya perdido inteligencia."}, {"q": "¿qué formulación es adecuada antes de imagen?", "options": ["«Esquizofrenia de inicio tardío» o «infarto de una arteria específica confirmado».", "«Posible afasia aguda, con sospecha vascular que necesita evaluación inmediata»."], "correct": 1, "feedback": "A expresa síndrome y prioridad sin fingir confirmación. Las dos conclusiones de B exceden la información."}, {"q": "¿qué información comunicar sin retrasar la atención?", "options": ["Última hora conocida sin síntomas, comienzo observado, evolución, medicamentos relevantes, antecedentes y contacto del testigo.", "Una interpretación extensa sobre el significado de cada palabra."], "correct": 0, "feedback": "A ayuda al circuito urgente. La descripción detallada puede completarse después."}, {"q": "¿si mejora el habla puede cancelarse la urgencia?", "options": ["Cancelar la urgencia si mejora.", "Mantener la atención urgente aunque mejore."], "correct": 1, "feedback": "Una alteración transitoria también necesita evaluación urgente."}, {"q": "¿hablar sobre ella como si no estuviera o dirigirse a ella con apoyos?", "options": ["Dirigirse a la persona con apoyos de comunicación.", "Hablar como si no estuviera presente."], "correct": 0, "feedback": "No se debe confundir dificultad de lenguaje con ausencia de comprensión o de preferencias."}]}</script>
+<script>
+(function () {
+  'use strict';
+  const data = JSON.parse(document.getElementById('study-data').textContent);
+  const C = StudyCore, ids = Object.keys(data), state = C.create(ids);
+  const articles = Object.fromEntries(ids.map(id => [id,document.getElementById(id)]));
+  const systems = Object.fromEntries(ids.map(id => [id,articles[id].dataset.sys.split(' ')]));
+  const select = document.getElementById('case-select');
+  const status = document.getElementById('study-status');
+  const panels = {};
+  ids.forEach(id => {
+    const panel = document.createElement('section'); panel.className='guide'; panel.setAttribute('aria-label','Recorrido guiado');
+    articles[id].querySelector('.case-analysis').before(panel); panels[id]=panel;
+  });
+  function el(tag, text, cls) { const x=document.createElement(tag); if (text !== undefined) x.textContent=text; if(cls)x.className=cls; return x; }
+  function button(text,fn,cls) { const x=el('button',text,cls); x.type='button'; x.addEventListener('click',fn); return x; }
+  function renderGuide(id,focus) {
+    const c=state.cases[id], q=data[id][c.step], panel=panels[id]; panel.replaceChildren();
+    const heading=el('h3','Paso '+(c.step+1)+' de 6'); heading.tabIndex=-1; panel.append(heading);
+    panel.append(el('p',Object.keys(c.answers).length+' de 6 decisiones respondidas · Puedes consultar la solución para avanzar.','guide-progress'));
+    const group=el('fieldset'), legend=el('legend',q.q); group.append(legend);
+    q.options.forEach((text,i) => {
+      const label=el('label'), radio=document.createElement('input'); radio.type='radio'; radio.name=id+'-step-'+c.step; radio.value=String(i); radio.checked=c.answers[c.step]===i;
+      radio.addEventListener('change',()=>{ C.answer(state,id,c.step,i,data); renderGuide(id,false); const chosen=panel.querySelector('input[value="'+i+'"]'); if(chosen)chosen.focus(); });
+      label.append(radio,el('span',text)); group.append(label);
+    }); panel.append(group);
+    if(Object.hasOwn(c.answers,c.step)) {
+      const ok=c.answers[c.step]===q.correct;
+      const feedback=el('div',(ok?'Respuesta razonada: ':'Revisa tu elección: ')+q.feedback,'guide-feedback'+(ok?'':' needs-review'));
+      feedback.setAttribute('role','status'); panel.append(feedback);
+    }
+    const actions=el('div',undefined,'guide-actions');
+    const prev=button('Anterior',()=>{C.previous(state,id);renderGuide(id,true);}); prev.disabled=c.step===0;
+    const reveal=button(c.revealed[c.step]?'Ocultar solución':'Consultar solución',()=>{if(c.revealed[c.step])delete c.revealed[c.step];else C.reveal(state,id); renderGuide(id,false);});
+    reveal.setAttribute('aria-expanded',String(!!c.revealed[c.step]));
+    const next=button(c.step===5?'Último paso':'Siguiente',()=>{C.next(state,id);renderGuide(id,true);},'next');next.disabled=!C.canNext(state,id);
+    actions.append(prev,reveal,next,button('Reiniciar este caso',()=>{C.reset(state,id);renderGuide(id,true);})); panel.append(actions);
+    if(c.revealed[c.step]) {
+      const box=el('section',undefined,'guide-solution');box.append(el('h4','Solución consultable y límites'));
+      const detail=articles[id].querySelectorAll('.case-analysis > details')[c.step];
+      Array.from(detail.children).filter(x=>x.tagName!=='SUMMARY').forEach(x=>box.append(x.cloneNode(true)));panel.append(box);
+    }
+    if(c.step===5)panel.append(el('p','Cierre: justifica una prioridad, cita un dato y expresa una incertidumbre. Este ejercicio no certifica competencia clínica.','note'));
+    if(focus)heading.focus();
+  }
+  function render() {
+    document.body.dataset.mode=state.mode;
+    const allowed=C.visible(state,systems);
+    if(!allowed.includes(state.active) && allowed.length) C.select(state,allowed[0]);
+    Array.from(select.options).forEach(o=>{o.hidden=!allowed.includes(o.value);o.disabled=!allowed.includes(o.value);});select.value=state.active;
+    ids.forEach(id=>{
+      articles[id].hidden=state.mode==='guided'?id!==state.active:!allowed.includes(id);
+      articles[id].querySelector('.case-analysis').classList.toggle('reading-hidden',state.mode==='guided');
+      panels[id].hidden=state.mode!=='guided';
+    });
+    document.getElementById('guided-mode').setAttribute('aria-pressed',String(state.mode==='guided'));
+    document.getElementById('reading-mode').setAttribute('aria-pressed',String(state.mode==='reading'));
+    document.getElementById('filter-status').textContent=allowed.length+' de 10 casos en el filtro. Imprimir incluye los diez.';
+    status.textContent=state.mode==='guided'?'Modo guiado · '+select.options[select.selectedIndex].text:'Modo lectura · análisis completos disponibles';
+    if(state.mode==='guided')renderGuide(state.active,false);
+  }
+  select.addEventListener('change',()=>{C.select(state,select.value);render();articles[state.active].querySelector('h2').tabIndex=-1;articles[state.active].querySelector('h2').focus();});
+  document.getElementById('guided-mode').addEventListener('click',()=>{C.mode(state,'guided');render();});
+  document.getElementById('reading-mode').addEventListener('click',()=>{C.mode(state,'reading');render();});
+  document.querySelectorAll('.chip[data-f]').forEach(chip=>chip.addEventListener('click',()=>{
+    state.filter=chip.dataset.f;document.querySelectorAll('.chip[data-f]').forEach(x=>x.setAttribute('aria-pressed',String(x===chip)));render();
+  }));
+  document.getElementById('toggle').addEventListener('click',event=>{
+    const t=event.currentTarget,open=t.getAttribute('aria-pressed')!=='true';
+    document.querySelectorAll('.case-analysis > details').forEach(x=>x.open=open);t.setAttribute('aria-pressed',String(open));t.textContent=open?'Cerrar todos los análisis':'Abrir todos los análisis';
+  });
+  document.querySelectorAll('.atlas a').forEach(a=>a.addEventListener('click',()=>{
+    const id=a.getAttribute('href').slice(1);if(!articles[id])return;
+    state.filter='all';C.select(state,id);document.querySelectorAll('.chip[data-f]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.f==='all')));render();
+  }));
+  let printSnapshot=null;
+  window.addEventListener('beforeprint',()=>{
+    if(printSnapshot)return;
+    printSnapshot={details:Array.from(document.querySelectorAll('.case-analysis > details')).map(x=>[x,x.open]),articles:ids.map(id=>[articles[id],articles[id].hidden])};
+    printSnapshot.details.forEach(([x])=>x.open=true); printSnapshot.articles.forEach(([x])=>x.hidden=false);
+  });
+  window.addEventListener('afterprint',()=>{
+    if(!printSnapshot)return;printSnapshot.details.forEach(([x,open])=>x.open=open);printSnapshot.articles.forEach(([x,hidden])=>x.hidden=hidden);printSnapshot=null;
+  });
+  document.getElementById('print-all').addEventListener('click',()=>window.print());
+  render();
+})();
+
+</script>
+</body>
+</html>
